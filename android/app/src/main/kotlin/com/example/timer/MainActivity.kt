@@ -1,4 +1,4 @@
-package com.tgeiling.timer
+package com.tgeiling.flametimer
 
 import io.flutter.embedding.android.FlutterActivity
 
