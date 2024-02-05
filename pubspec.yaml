@@ -2,7 +2,7 @@ name: timer
 description: A new Flutter project.
 publish_to: 'none'
 
-version: 2.0.1+3
+version: 1.0.0+1
 
 environment:
   sdk: '>=3.2.0 <4.0.0'
@@ -17,6 +17,7 @@ dependencies:
   percent_indicator: ^4.2.3
   fl_chart: ^0.66.0
   intl: ^0.17.0
+  flutter_riverpod: ^2.4.9
 
 dev_dependencies:
   flutter_test:
@@ -35,9 +36,48 @@ flutter_icons:
 flutter:
   uses-material-design: true
   assets:
-    - assets/digi.ttf
-    - assets/campfire1.png
-    - assets/campfire2.png
+    - assets/DS-DIGI.TTF
+    - assets/DS-DIGIB.TTF
+    - assets/brickwall.png
+    - assets/bluepixel.png
+    - assets/steelpixel.png
+    - assets/steelpixel1.png
+    - assets/steelpixel2.png
+    - assets/steelpixel3.png
+    - assets/book.png
+    - assets/campfires/campfireBG.png
+    - assets/campfires/smokeFire.gif
+    - assets/campfires/campfire0.gif
+    - assets/campfires/campfire1.gif
+    - assets/campfires/campfire2.gif
+    - assets/campfires/campfire3.gif
+    - assets/campfires/campfire4.gif
+    - assets/campfires/campfire5.gif
+    - assets/campfires/campfire6.gif
+    - assets/campfires/campfire7.gif
+    - assets/campfires/campfire8.gif
+    - assets/campfires/campfire9.gif
+    - assets/campfires/campfire10.gif
+    - assets/campfires/campfire11.gif
+    - assets/campfires/campfire12.gif
+    - assets/campfires/campfire13.gif
+    - assets/campfires/campfire14.gif
+    - assets/campfires/campfire15.gif
+    - assets/campfires/campfire16.gif
+    - assets/campfires/campfire17.gif
+    - assets/campfires/campfire18.gif
+    - assets/campfires/campfire19.gif
+    - assets/campfires/campfire20.gif
+    - assets/campfires/campfire21.gif
+    - assets/campfires/campfire22.gif
+    - assets/campfires/campfire23.gif
+    - assets/campfires/campfire24.gif
+    - assets/campfires/campfire25.gif
+    - assets/campfires/campfire26.gif
+    - assets/campfires/campfire27.gif
+    - assets/campfires/campfire28.gif
+    - assets/campfires/campfire29.gif
+    - assets/campfires/campfire30.gif
     - assets/reach10total.png
     - assets/reach100total.png
     - assets/reach1000total.png
@@ -48,7 +88,57 @@ flutter:
     - assets/reach1goal.png
     - assets/reach10goal.png
     - assets/reach100goal.png
+    - assets/frame1.png
+    - assets/frame2.png
+    - assets/frame3.png
+    - assets/frame4.png
+    - assets/frame5.png
+    - assets/woodframe.png
+    - assets/icons/switch.png
+    - assets/icons/play.png
+    - assets/icons/pause.png
+    - assets/icons/trash.png
+    - assets/icons/home.png
+    - assets/icons/disk.png
+    - assets/icons/star.png
+    - assets/icons/gear.png
+    - assets/icons/plus.png
+    - assets/icons/coin.png
+    - assets/icons/coinStack.png
+    - assets/icons/item1.png
+    - assets/icons/item2.png
+    - assets/icons/item3.png
+    - assets/icons/item4.png
+    - assets/icons/item5.png
+    - assets/icons/item6.png
+    - assets/icons/item7.png
+    - assets/icons/item8.png
+    - assets/icons/item9.png
+    - assets/icons/item10.png
+    - assets/icons/item11.png
+    - assets/icons/item12.png
+    - assets/icons/item13.png
+    - assets/icons/item14.png
+    - assets/icons/item15.png
+    - assets/icons/r1.png
+    - assets/icons/r2.png
+    - assets/icons/r3.png
+    - assets/icons/r4.png
+    - assets/icons/r5.png
+    - assets/icons/r6.png
+    - assets/icons/r7.png
+    - assets/icons/r8.png
+    - assets/icons/r9.png
+    - assets/icons/r10.png
+    - assets/icons/r11.png
+    - assets/icons/r12.png
+    - assets/icons/research.png
+    - assets/fonts/freetime1.png
+    - assets/fonts/productive1.png
+
   fonts:
     - family: digi
       fonts:
-        - asset: assets/digi.ttf
+        - asset: assets/DS-DIGI.TTF
+        - asset: assets/DS-DIGIB.TTF
+          style: italic

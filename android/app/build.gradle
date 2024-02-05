@@ -12,10 +12,10 @@ if (localPropertiesFile.exists()) {
     }
 }
 
-def flutterVersionCode = '8'
+def flutterVersionCode = '1'
 
 
-def flutterVersionName = '8.0'
+def flutterVersionName = '1.0'
 
 android {
     namespace "com.tgeiling.flametimer"
