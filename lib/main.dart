@@ -949,12 +949,11 @@ class _MainFrameState extends State<MainFrame>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
-    if (_productiveInterval.isActive && state == AppLifecycleState.paused) {
-      // Save the current time when the app is paused
+    if (_productiveInterval.isActive ||
+        _freeTimeInterval.isActive && state == AppLifecycleState.paused) {
       _saveCurrentTime();
       _brakeStop();
     } else if (brake == true && state == AppLifecycleState.resumed) {
-      // Calculate the elapsed time and update the timer when the app is resumed
       _updateTimerOnResume();
       _start();
     }
@@ -1303,7 +1302,7 @@ class _MainFrameState extends State<MainFrame>
     return TextButton(
       onPressed: onPressed,
       style: TextButton.styleFrom(
-        primary: Colors.black,
+        foregroundColor: Colors.black,
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
       ),
       child: Image.asset(

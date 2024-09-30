@@ -912,7 +912,7 @@ class QuestDialog extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text('Quests', style: Theme.of(context).textTheme.headline6),
+              Text('Quests', style: Theme.of(context).textTheme.headlineLarge),
               SizedBox(height: 10),
               Expanded(
                 child: ListView.builder(
