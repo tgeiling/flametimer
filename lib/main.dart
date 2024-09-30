@@ -418,10 +418,6 @@ class _MainFrameState extends State<MainFrame>
       }
       // Update the last reset date to today
       await prefs.setString(lastResetDateKey, now.toIso8601String());
-      if (totalProductiveTimeSeconds > maximumProductiveSeconds) {
-        await prefs.setInt(
-            "maximumProductiveSeconds", totalProductiveTimeSeconds);
-      }
     } else {
       // Save the updated seconds back to SharedPreferences
       if (_activeMode == "freeTime") {

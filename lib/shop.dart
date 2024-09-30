@@ -787,21 +787,12 @@ class FireResearchTier extends StatelessWidget {
                             5), // Adjust border radius as needed
                         // Add more styling as per ElevatedButton's appearance
                       ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize
-                            .min, // Use minimum space that is needed by children
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
-                          Text('Buy'),
-                          SizedBox(width: 4),
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Image.asset('assets/icons/coin.png', width: 10),
-                              SizedBox(
-                                  width: 4), // Spacing between icon and text
-                              Text("${item.price}"),
-                            ],
-                          ),
+                          Image.asset('assets/icons/coin.png', width: 10),
+                          SizedBox(width: 4), // Spacing between icon and text
+                          Text("${item.price}"),
                         ],
                       ),
                     ),
