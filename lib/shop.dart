@@ -285,7 +285,7 @@ class _ShopWidgetState extends State<ShopWidget>
               coinCount.toString().padLeft(8, '0'),
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 20,
+                fontSize: 18,
               ),
             ),
           ),

@@ -1299,7 +1299,7 @@ class _MainFrameState extends State<MainFrame>
       onPressed: onPressed,
       style: TextButton.styleFrom(
         foregroundColor: Colors.black,
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+        padding: EdgeInsets.symmetric(horizontal: 14, vertical: 12),
       ),
       child: Image.asset(
         assetPath,
