@@ -2,7 +2,7 @@ name: timer
 description: A new Flutter project.
 publish_to: 'none'
 
-version: 1.0.0+1
+version: 1.0.0+2
 
 environment:
   sdk: '>=3.2.0 <4.0.0'
@@ -31,7 +31,7 @@ flutter_icons:
   ios: true
   image_path: "assets/playstorelogo.png"
   min_sdk_android: 21
-  ios_assets_catalog: "Timer"
+  ios_assets_catalog: "Flame Timer"
 
 flutter:
   uses-material-design: true
@@ -139,6 +139,4 @@ flutter:
   fonts:
     - family: digi
       fonts:
-        - asset: assets/DS-DIGI.ttf
-        - asset: assets/DS-DIGIB.ttf
-          style: italic
+        - asset: assets/digi.ttf
