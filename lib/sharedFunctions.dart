@@ -704,8 +704,9 @@ Future<void> updateQuestProgress() async {
 
   double averageProductiveHours = await calculateAverageProductiveHours();
   double todayProductiveHours = await calculateTodayProductiveHours();
-  double todayProductiveProgress =
-      (todayProductiveHours / productiveDailyGoal).clamp(0.0, 1.0);
+  double todayProductiveProgress = productiveDailyGoal > 0
+      ? (todayProductiveHours / productiveDailyGoal).clamp(0.0, 1.0)
+      : 0.0;
 
   DateTime currentDate = DateTime.now();
   int lastGoalHitTimestamp = prefs.getInt("lastGoalHitDate") ?? 0;

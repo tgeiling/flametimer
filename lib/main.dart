@@ -687,7 +687,7 @@ class _MainFrameState extends State<MainFrame>
         'path': 'assets/campfires/campfire2.gif'
       },
       {
-        'limit': 1000,
+        'limit': 500,
         'levelReq': 1,
         'multiplier': 1.1,
         'flameLevel': 1,
@@ -995,16 +995,27 @@ class _MainFrameState extends State<MainFrame>
     super.build(context);
     return Container(
         decoration: BoxDecoration(
-          image: DecorationImage(
-            image: labelSwitcher(),
-            fit: BoxFit.fill,
+          color: Color.fromARGB(255, 231, 231, 231),
+          border: Border.all(
+            color: Color.fromARGB(255, 187, 187, 187),
+            width: 2.0,
           ),
+          borderRadius: BorderRadius.circular(4.0),
         ),
         child: Padding(
           padding: EdgeInsets.only(top: 50),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              SizedBox(height: 30),
+              Text(
+                label,
+                style: TextStyle(
+                    fontSize: 52,
+                    fontFamily: 'digi',
+                    fontWeight: FontWeight.bold,
+                    color: const Color.fromARGB(255, 46, 46, 46)),
+              ),
               Expanded(
                 child: Align(
                   alignment: Alignment.bottomCenter,
@@ -1046,7 +1057,8 @@ class _MainFrameState extends State<MainFrame>
                               bottom: 30,
                               left: 120,
                               child: Container(
-                                padding: EdgeInsets.all(2),
+                                padding: EdgeInsets.only(
+                                    left: 8, right: 8, top: 4, bottom: 4),
                                 decoration: BoxDecoration(
                                   color: Colors.grey.shade800,
                                   border:
@@ -1056,7 +1068,8 @@ class _MainFrameState extends State<MainFrame>
                                 child: Text(
                                   "Lv: " + flameLevel.toString(),
                                   style: TextStyle(
-                                      fontSize: 18,
+                                      fontSize: 22,
+                                      fontFamily: 'digi',
                                       fontWeight: FontWeight.bold,
                                       color: getFlameColor(flameLevel)),
                                 ),
@@ -1135,6 +1148,7 @@ class _MainFrameState extends State<MainFrame>
             child: Text(
               coinCount.toString().padLeft(6, '0'),
               style: TextStyle(
+                fontFamily: 'digi',
                 color: Colors.white,
                 fontSize: 20,
               ),
@@ -1382,6 +1396,7 @@ class _FlameCounterWidgetState extends State<FlameCounterWidget>
                     '+' + difference.toString(),
                     style: TextStyle(
                         fontSize: 24,
+                        fontFamily: 'digi',
                         color: Colors.white,
                         fontWeight: FontWeight.bold),
                   ),

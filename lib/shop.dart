@@ -276,16 +276,17 @@ class _ShopWidgetState extends State<ShopWidget>
         children: <Widget>[
           Image.asset(
             'assets/icons/coinStack.png',
-            width: 20, // Adjust the size to fit your needs
-            height: 20, // Adjust the size to fit your needs
+            width: 20,
+            height: 20,
           ),
           SizedBox(width: 4), // Optional spacing between image and text
           Center(
             child: Text(
               coinCount.toString().padLeft(8, '0'),
               style: TextStyle(
+                fontFamily: 'digi',
                 color: Colors.white,
-                fontSize: 18,
+                fontSize: 22,
               ),
             ),
           ),
@@ -615,7 +616,10 @@ class ExpManagerWidget extends StatelessWidget {
             alignment: Alignment.topRight,
             child: Text(
               'Level $level',
-              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  fontSize: 34,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'digi'),
             ),
           ),
           Stack(
@@ -708,11 +712,39 @@ class FireResearchItem {
   }
 }
 
+// ignore: must_be_immutable
 class FireResearchTier extends StatelessWidget {
   final FireResearchTierData tierData;
   final VoidCallback onResearch;
 
   FireResearchTier({required this.tierData, required this.onResearch});
+
+  Timer? _timer;
+  double _interval = 0.3; // Initial interval of 0.3 seconds
+  final double _decrement =
+      0.05; // Speed up by decreasing the interval by 0.05 seconds
+  final double _minInterval = 0.1; // Minimum interval limit
+
+  void startBuying(FireResearchItem item, Function onResearch) {
+    _timer = Timer.periodic(Duration(milliseconds: (_interval * 1000).toInt()),
+        (timer) {
+      item.incrementProgress();
+      onResearch();
+
+      // Speed up the interval
+      if (_interval > _minInterval) {
+        _interval -= _decrement;
+        stopBuying(); // Stop the current timer
+        startBuying(item, onResearch); // Restart with the new interval
+      }
+    });
+  }
+
+  void stopBuying() {
+    _timer?.cancel();
+    _timer = null;
+    _interval = 0.3; // Reset the interval when stopping
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -771,21 +803,22 @@ class FireResearchTier extends StatelessWidget {
                     width: 14,
                   ),
                   GestureDetector(
-                    onTap: isTierUnlocked
-                        ? () {
-                            item.incrementProgress();
-                            onResearch();
+                    onTapDown: isTierUnlocked
+                        ? (_) {
+                            startBuying(item, onResearch);
                           }
                         : null,
+                    onTapUp: (_) {
+                      stopBuying();
+                    },
+                    onTapCancel: () {
+                      stopBuying();
+                    },
                     child: Container(
                       padding: EdgeInsets.all(10), // Adjust padding as needed
                       decoration: BoxDecoration(
-                        color: isTierUnlocked
-                            ? Colors.blue
-                            : Colors.grey, // Adjust colors as needed
-                        borderRadius: BorderRadius.circular(
-                            5), // Adjust border radius as needed
-                        // Add more styling as per ElevatedButton's appearance
+                        color: isTierUnlocked ? Colors.blue : Colors.grey,
+                        borderRadius: BorderRadius.circular(5),
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -820,7 +853,11 @@ class _FireResearchScreenState extends State<FireResearchScreen> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        Text('Fire Research', style: TextStyle(fontSize: 20)),
+        Text('Fire Research',
+            style: TextStyle(
+              fontSize: 34,
+              fontFamily: 'digi',
+            )),
         Expanded(
           child: ListView.builder(
             itemCount: tiers.length,
