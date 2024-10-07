@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -228,6 +229,31 @@ Future<double> calculateTodayProductiveHours() async {
 
   // Fetch the total seconds recorded for today's productive time
   int totalSecondsToday = prefs.getInt('currentDayProductiveTime' + today) ?? 0;
+
+  // Convert total seconds to hours
+  double hoursToday = totalSecondsToday / 3600.0;
+
+  return hoursToday;
+}
+
+Future<double> calculateTodayFreetimeHours() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+
+  // Get the current day of the week
+  int currentDayOfWeek = DateTime.now().weekday; // 1 = Monday, 7 = Sunday
+  List<String> daysOfWeek = [
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+    'Sunday'
+  ];
+  String today = daysOfWeek[currentDayOfWeek - 1];
+
+  // Fetch the total seconds recorded for today's productive time
+  int totalSecondsToday = prefs.getInt('currentDayFreeTime' + today) ?? 0;
 
   // Convert total seconds to hours
   double hoursToday = totalSecondsToday / 3600.0;
@@ -535,7 +561,7 @@ void initializeResearchItemsFirst() async {
         prefKey: 'progressT2_1',
         imageAsset: 'assets/icons/r10.png',
         description: 'Gains 0.1x Exp boost',
-        price: 100,
+        price: 1000,
       ),
       FireResearchItem(
         type: 'FLAME',
@@ -544,7 +570,7 @@ void initializeResearchItemsFirst() async {
         prefKey: 'progressT2_2',
         imageAsset: 'assets/icons/r6.png',
         description: 'Gains 0.1x Flame boost',
-        price: 100,
+        price: 1000,
       ),
       FireResearchItem(
         type: 'COINS',
@@ -553,7 +579,7 @@ void initializeResearchItemsFirst() async {
         prefKey: 'progressT2_3',
         imageAsset: 'assets/icons/r2.png',
         description: 'Gains 0.1x Coin boost',
-        price: 100,
+        price: 1000,
       ),
     ]),
     FireResearchTierData(tier: 3, levelToUnlock: 15, researchItems: [
@@ -564,7 +590,7 @@ void initializeResearchItemsFirst() async {
         prefKey: 'progressT3_1',
         imageAsset: 'assets/icons/r11.png',
         description: 'Gains 1.0x Exp boost',
-        price: 100,
+        price: 5000,
       ),
       FireResearchItem(
         type: 'FLAME',
@@ -573,7 +599,7 @@ void initializeResearchItemsFirst() async {
         prefKey: 'progressT3_2',
         imageAsset: 'assets/icons/r7.png',
         description: 'Gains 1.0x Flame boost',
-        price: 100,
+        price: 5000,
       ),
       FireResearchItem(
         type: 'COINS',
@@ -582,7 +608,7 @@ void initializeResearchItemsFirst() async {
         prefKey: 'progressT3_3',
         imageAsset: 'assets/icons/r3.png',
         description: 'Gains 1x Coin boost',
-        price: 100,
+        price: 5000,
       )
     ]),
     FireResearchTierData(tier: 4, levelToUnlock: 20, researchItems: [
@@ -593,7 +619,7 @@ void initializeResearchItemsFirst() async {
         prefKey: 'progressT4_1',
         imageAsset: 'assets/icons/r12.png',
         description: 'Gains 10x Exp boost',
-        price: 100,
+        price: 10000,
       ),
       FireResearchItem(
         type: 'FLAME',
@@ -602,7 +628,7 @@ void initializeResearchItemsFirst() async {
         prefKey: 'progressT4_2',
         imageAsset: 'assets/icons/r8.png',
         description: 'Gains 10x Flame boost',
-        price: 100,
+        price: 10000,
       ),
       FireResearchItem(
         type: 'COINS',
@@ -611,101 +637,308 @@ void initializeResearchItemsFirst() async {
         prefKey: 'progressT4_3',
         imageAsset: 'assets/icons/r4.png',
         description: 'Gains 10 Coin boost',
-        price: 100,
+        price: 10000,
       ),
     ]),
   ];
 }
 
-void initializeQuestItemsFirst() async {
-  final prefs = await SharedPreferences.getInstance();
-
-  questItems = [
-    QuestItem(
-      id: "1",
-      title: 'A Start',
-      description: 'Reach 5 Hours Productive Total',
-      level: 1,
-      isDone: prefs.getBool("1_isDone") ?? false,
-      isRewardTaken:
-          prefs.getBool("1_isRewardTaken") ?? false, // Added parameter
-      progress: prefs.getInt("1_progress") ?? 0,
-      maxValue: 5,
-      isGoldReward: true,
-      rewardValue: '100 Gold',
-      goldValue: 100,
-    ),
-    QuestItem(
-      id: "2",
-      title: 'Restore Balance',
-      description: 'Reach 3 Avg Hours',
-      level: 2,
-      isDone: prefs.getBool("2_isDone") ?? false,
-      isRewardTaken:
-          prefs.getBool("2_isRewardTaken") ?? false, // Added parameter
-      progress: prefs.getInt("2_progress") ?? 0,
-      maxValue: 3,
-      isGoldReward: false,
-      rewardValue: 'Magic Sword',
-      itemImagePath:
-          'assets/icons/item1.png', // Assuming an image asset path for the item
-      rewardDescription: 'A legendary sword imbued with magical powers.',
-    ),
-    QuestItem(
-      id: "3",
-      title: 'Gain Traktion',
-      description: 'Reach 1 Hours Productive Total',
-      level: 25,
-      isDone: prefs.getBool("3_isDone") ?? false,
-      isRewardTaken:
-          prefs.getBool("3_isRewardTaken") ?? false, // Added parameter
-      progress: prefs.getInt("3_progress") ?? 0,
-      maxValue: 1,
-      isGoldReward: true,
-      rewardValue: '150000 Gold',
-      goldValue: 150000,
-    ),
-    QuestItem(
-      id: "4",
-      title: 'Goal Hitter',
-      description: 'Reach your goal just once',
-      level: 27,
-      isDone: prefs.getBool("4_isDone") ?? false,
-      isRewardTaken:
-          prefs.getBool("4_isRewardTaken") ?? false, // Added parameter
-      progress: prefs.getInt("4_progress") ?? 0,
-      maxValue: 1,
-      isGoldReward: true,
-      rewardValue: '150000 Gold',
-      goldValue: 150000,
-    ),
-    QuestItem(
-      id: "5",
-      title: 'Goal Hitter 2',
-      description: 'Reach your goal just once',
-      level: 29,
-      isDone: prefs.getBool("5_isDone") ?? false,
-      isRewardTaken:
-          prefs.getBool("5_isRewardTaken") ?? false, // Added parameter
-      progress: prefs.getInt("5_progress") ?? 0,
-      maxValue: 1,
-      isGoldReward: true,
-      rewardValue: '150000 Gold',
-      goldValue: 150000,
-    ),
-  ];
+// Define the QuestType enum
+enum QuestType {
+  CollectCoins,
+  EarnExperience,
+  GenerateFlame,
+  CollectProductiveTime,
+  CollectFreeTimeProductiveTime,
+  MeetDailyProductiveGoal,
+  MeetFreeTimeProductiveGoal,
 }
 
-Future<void> updateQuestProgress() async {
+// Define the QuestItem class
+class QuestItem {
+  final String id;
+  String title;
+  String description;
+  int level;
+  bool isDone;
+  bool isRewardTaken;
+  int progress;
+  int maxValue;
+  bool isGoldReward;
+  String rewardValue;
+  int? goldValue;
+  String? itemImagePath;
+  String? rewardDescription;
+  QuestType questType;
+
+  QuestItem({
+    required this.id,
+    required this.title,
+    required this.description,
+    required this.level,
+    required this.isDone,
+    required this.isRewardTaken,
+    required this.progress,
+    required this.maxValue,
+    required this.isGoldReward,
+    required this.rewardValue,
+    this.goldValue,
+    this.itemImagePath,
+    this.rewardDescription,
+    required this.questType,
+  });
+
+  // Convert QuestItem to a Map for JSON encoding
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'title': title,
+      'description': description,
+      'level': level,
+      'isDone': isDone,
+      'isRewardTaken': isRewardTaken,
+      'progress': progress,
+      'maxValue': maxValue,
+      'isGoldReward': isGoldReward,
+      'rewardValue': rewardValue,
+      'goldValue': goldValue,
+      'itemImagePath': itemImagePath,
+      'rewardDescription': rewardDescription,
+      'questType': questType.toString(),
+    };
+  }
+
+  // Create a QuestItem from a Map (after JSON decoding)
+  factory QuestItem.fromMap(Map<String, dynamic> map) {
+    return QuestItem(
+      id: map['id'],
+      title: map['title'],
+      description: map['description'],
+      level: map['level'],
+      isDone: map['isDone'],
+      isRewardTaken: map['isRewardTaken'],
+      progress: map['progress'],
+      maxValue: map['maxValue'],
+      isGoldReward: map['isGoldReward'],
+      rewardValue: map['rewardValue'],
+      goldValue: map['goldValue'],
+      itemImagePath: map['itemImagePath'],
+      rewardDescription: map['rewardDescription'],
+      questType: QuestType.values.firstWhere(
+          (e) => e.toString() == map['questType'],
+          orElse: () => QuestType.CollectCoins),
+    );
+  }
+}
+
+// Global list to store quests
+List<QuestItem> questItems = [];
+
+// Function to initialize quests
+Future<void> initializeQuestItemsFirst() async {
+  final prefs = await SharedPreferences.getInstance();
+
+  // Always load quests from SharedPreferences
+  await loadQuestsFromPreferences();
+
+  // Get the current date and compare with the last quest generation date
+  DateTime currentDate = DateTime.now();
+  int lastQuestGenerationTimestamp =
+      prefs.getInt("lastQuestGenerationDate") ?? 0;
+  DateTime lastQuestGenerationDate =
+      DateTime.fromMillisecondsSinceEpoch(lastQuestGenerationTimestamp);
+
+  // If the quests haven't been generated today, generate new random quests
+  if (lastQuestGenerationDate.day != currentDate.day ||
+      lastQuestGenerationDate.month != currentDate.month ||
+      lastQuestGenerationDate.year != currentDate.year) {
+    await generateRandomQuests();
+    // After generating new quests, load them again
+    await loadQuestsFromPreferences();
+  }
+}
+
+// Function to generate random quests
+Future<void> generateRandomQuests() async {
+  final prefs = await SharedPreferences.getInstance();
+  Random random = Random();
+
+  // List of all available quest types
+  List<QuestType> allQuestTypes = [
+    QuestType.CollectCoins,
+    QuestType.EarnExperience,
+    QuestType.GenerateFlame,
+    QuestType.CollectProductiveTime,
+    QuestType.CollectFreeTimeProductiveTime,
+    QuestType.MeetDailyProductiveGoal,
+    QuestType.MeetFreeTimeProductiveGoal,
+  ];
+
+  // Generate one quest for each quest type
+  List<QuestItem> generatedQuests = [];
+  int questIdCounter = 1;
+  for (QuestType questType in allQuestTypes) {
+    QuestItem quest = generateQuestForType(questType, questIdCounter++);
+    generatedQuests.add(quest);
+  }
+
+  // Now generate additional quests, ensuring not to duplicate quest types excessively
+  while (generatedQuests.length < 10) {
+    // Limit the number of duplicates to at most 2 per quest type
+    // Count how many times each quest type has been used
+    Map<QuestType, int> questTypeCounts = {};
+    for (QuestItem quest in generatedQuests) {
+      questTypeCounts[quest.questType] =
+          (questTypeCounts[quest.questType] ?? 0) + 1;
+    }
+
+    // Filter quest types that have been used less than 2 times
+    List<QuestType> availableQuestTypes = allQuestTypes.where((questType) {
+      return (questTypeCounts[questType] ?? 0) < 2;
+    }).toList();
+
+    if (availableQuestTypes.isEmpty) {
+      // All quest types have been used the maximum allowed times
+      break;
+    }
+
+    // Select a random quest type from the available ones
+    QuestType questType =
+        availableQuestTypes[random.nextInt(availableQuestTypes.length)];
+
+    QuestItem quest = generateQuestForType(questType, questIdCounter++);
+    generatedQuests.add(quest);
+  }
+
+  // Assign the generated quests to questItems
+  questItems = generatedQuests;
+
+  // Save the generated quests in SharedPreferences
+  await saveQuestsToPreferences();
+
+  // Save the current date as the last quest generation date
+  DateTime currentDate = DateTime.now();
+  await prefs.setInt(
+      'lastQuestGenerationDate', currentDate.millisecondsSinceEpoch);
+}
+
+// Helper function to generate a quest for a given quest type
+QuestItem generateQuestForType(QuestType questType, int questId) {
+  Random random = Random();
+  String title;
+  String description;
+  int maxValue;
+
+  switch (questType) {
+    case QuestType.CollectCoins:
+      maxValue = (random.nextInt(20) + 1) * 100; // Between 100 and 2000 coins
+      title = 'Collect $maxValue Coins';
+      description = 'Collect a total of $maxValue coins.';
+      break;
+    case QuestType.EarnExperience:
+      maxValue = (random.nextInt(10) + 1) * 50; // Between 50 and 500 experience
+      title = 'Earn $maxValue Experience';
+      description = 'Earn a total of $maxValue experience points.';
+      break;
+    case QuestType.GenerateFlame:
+      maxValue = (random.nextInt(10) + 1) * 10; // Between 10 and 100 flame
+      title = 'Generate $maxValue Flame';
+      description = 'Generate a total of $maxValue flame.';
+      break;
+    case QuestType.CollectProductiveTime:
+      maxValue = random.nextInt(10) + 1; // Between 1 and 10 hours
+      title = 'Track $maxValue Hours of Productive Time';
+      description = 'Accumulate $maxValue hours of productive work.';
+      break;
+    case QuestType.CollectFreeTimeProductiveTime:
+      maxValue = random.nextInt(5) + 1; // Between 1 and 5 hours
+      title = 'Track $maxValue Hours of Productive Free Time';
+      description = 'Be productive for $maxValue hours during free time.';
+      break;
+    case QuestType.MeetDailyProductiveGoal:
+      maxValue = 1; // Goal met or not
+      title = 'Meet Today\'s Productive Goal';
+      description = 'Achieve your productive goal for today.';
+      break;
+    case QuestType.MeetFreeTimeProductiveGoal:
+      maxValue = 1; // Goal met or not
+      title = 'Meet Today\'s Free Time Goal';
+      description = 'Achieve your productive goal during free time today.';
+      break;
+  }
+
+  bool isGoldReward =
+      random.nextBool(); // Randomly decide if the reward is gold
+  int randomGoldValue =
+      (random.nextInt(15) + 1) * 100; // Between 100 and 1500 gold
+  String rewardValue = isGoldReward ? '$randomGoldValue Gold' : 'Random Item';
+
+  return QuestItem(
+    id: questId.toString(),
+    title: title,
+    description: description,
+    level: 1, // All quests available from level 1 for now
+    isDone: false,
+    isRewardTaken: false,
+    progress: 0,
+    maxValue: maxValue,
+    isGoldReward: isGoldReward,
+    rewardValue: rewardValue,
+    goldValue: isGoldReward ? randomGoldValue : null,
+    itemImagePath:
+        !isGoldReward ? 'assets/icons/item${random.nextInt(15) + 1}.png' : null,
+    rewardDescription: !isGoldReward ? 'A special item for you.' : null,
+    questType: questType,
+  );
+}
+
+// Function to save quests to SharedPreferences
+Future<void> saveQuestsToPreferences() async {
+  final prefs = await SharedPreferences.getInstance();
+
+  // Convert the questItems list to a JSON string
+  List<String> questJsonList =
+      questItems.map((quest) => jsonEncode(quest.toMap())).toList();
+
+  // Save the list to SharedPreferences
+  await prefs.setStringList('questItems', questJsonList);
+}
+
+// Function to load quests from SharedPreferences
+Future<void> loadQuestsFromPreferences() async {
+  final prefs = await SharedPreferences.getInstance();
+
+  // Load the list from SharedPreferences
+  List<String>? questJsonList = prefs.getStringList('questItems');
+
+  if (questJsonList != null) {
+    questItems = questJsonList.map((questJson) {
+      Map<String, dynamic> questMap = jsonDecode(questJson);
+      return QuestItem.fromMap(questMap);
+    }).toList();
+  } else {
+    questItems = []; // Initialize as empty list if nothing is saved
+  }
+}
+
+// Function to update quest progress
+Future<void> updateQuestProgress(int totalFlameGenerated) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
-  double productiveDailyGoal =
-      await prefs.getDouble('productiveDailyGoal') ?? 0.0;
+  double productiveDailyGoal = prefs.getDouble('productiveDailyGoal') ?? 0.0;
+  double freeTimeProductiveGoal = prefs.getDouble('freetimeDailyGoal') ?? 0.0;
 
-  double averageProductiveHours = await calculateAverageProductiveHours();
+  double totalProductiveHours = await calculateTotalProductiveTimeHours();
   double todayProductiveHours = await calculateTodayProductiveHours();
   double todayProductiveProgress = productiveDailyGoal > 0
       ? (todayProductiveHours / productiveDailyGoal).clamp(0.0, 1.0)
+      : 0.0;
+
+  double totalFreeTimeProductiveHours = await calculateTotalFreeTimeHours();
+  double todayFreeTimeProductiveHours = await calculateTodayFreetimeHours();
+  ;
+  double todayFreeTimeProductiveProgress = freeTimeProductiveGoal > 0
+      ? (todayFreeTimeProductiveHours / freeTimeProductiveGoal).clamp(0.0, 1.0)
       : 0.0;
 
   DateTime currentDate = DateTime.now();
@@ -713,63 +946,72 @@ Future<void> updateQuestProgress() async {
   DateTime lastGoalHitDate =
       DateTime.fromMillisecondsSinceEpoch(lastGoalHitTimestamp);
 
-  bool todayGoalMet = await prefs.getBool("isTodayGoalMet") ?? false;
+  bool todayGoalMet = prefs.getBool("isTodayGoalMet") ?? false;
+  bool todayFreeTimeGoalMet = prefs.getBool("isTodayFreeTimeGoalMet") ?? false;
 
   // Reset isTodayGoalMet if it's a new day
   if (lastGoalHitDate.day != currentDate.day ||
       lastGoalHitDate.month != currentDate.month ||
       lastGoalHitDate.year != currentDate.year) {
     await prefs.setBool("isTodayGoalMet", false);
+    await prefs.setBool("isTodayFreeTimeGoalMet", false);
+    todayGoalMet = false;
+    todayFreeTimeGoalMet = false;
   }
 
+  int level = prefs.getInt('playerLevel') ?? 1;
+  int totalCoinsCollected = prefs.getInt('coinCount') ?? 0;
+  int totalExperienceEarned = prefs.getInt('expCount') ?? 0;
+
   for (QuestItem quest in questItems) {
-    // Update each quest's progress based on its title
-    switch (quest.id) {
-      case '1':
-        if (quest.level >= level) {
+    if (!quest.isDone && quest.level <= level) {
+      switch (quest.questType) {
+        case QuestType.CollectProductiveTime:
           quest.progress = totalProductiveHours.floor();
-        }
-        break;
-      case '2':
-        if (quest.level >= level) {
-          quest.progress =
-              (averageProductiveHours).clamp(0, quest.maxValue).toInt();
-        }
-        break;
-      case '3':
-        if (quest.level >= level) {
-          quest.progress = totalProductiveHours.floor();
-        }
-        break;
-      case '4':
-        if (quest.level >= level) {
+          break;
+        case QuestType.CollectFreeTimeProductiveTime:
+          quest.progress = totalFreeTimeProductiveHours.floor();
+          break;
+        case QuestType.MeetDailyProductiveGoal:
           quest.progress = todayGoalMet ? 1 : 0;
-        }
-        break;
-      case '5':
-        if (quest.level >= level) {
-          quest.progress = todayGoalMet ? 1 : 0;
-        }
-        break;
-      // Add more cases for other quests as needed
-    }
+          break;
+        case QuestType.MeetFreeTimeProductiveGoal:
+          quest.progress = todayFreeTimeGoalMet ? 1 : 0;
+          break;
+        case QuestType.CollectCoins:
+          quest.progress = totalCoinsCollected;
+          break;
+        case QuestType.EarnExperience:
+          quest.progress = totalExperienceEarned;
+          break;
+        case QuestType.GenerateFlame:
+          quest.progress = totalFlameGenerated;
+          break;
+      }
 
-    if (todayProductiveProgress >= 1 && !todayGoalMet) {
-      await prefs.setBool("isTodayGoalMet", true); // Set today's goal as met
-      await prefs.setInt("lastGoalHitDate",
-          currentDate.millisecondsSinceEpoch); // Update the last goal hit date
-    }
+      quest.progress = quest.progress.clamp(0, quest.maxValue);
 
-    // Save updated progress in SharedPreferences
-    await prefs.setInt('${quest.id}_progress', quest.progress);
-    if (quest.progress >= quest.maxValue) {
-      await prefs.setBool('${quest.id}_isDone', true);
+      if (quest.progress >= quest.maxValue) {
+        quest.progress = quest.maxValue;
+        quest.isDone = true;
+      }
     }
+  }
 
-    // Check if the quest is completed and perform necessary actions
-    if (quest.progress >= quest.maxValue) {
-      // Quest completed actions here
-    }
+  // Save updated quests to SharedPreferences
+  await saveQuestsToPreferences();
+
+  if (todayProductiveProgress >= 1 && !todayGoalMet) {
+    await prefs.setBool("isTodayGoalMet", true); // Set today's goal as met
+    await prefs.setInt("lastGoalHitDate",
+        currentDate.millisecondsSinceEpoch); // Update the last goal hit date
+  }
+
+  if (todayFreeTimeProductiveProgress >= 1 && !todayFreeTimeGoalMet) {
+    await prefs.setBool(
+        "isTodayFreeTimeGoalMet", true); // Set today's free time goal as met
+    await prefs.setInt("lastFreeTimeGoalHitDate",
+        currentDate.millisecondsSinceEpoch); // Update the last goal hit date
   }
 }
 

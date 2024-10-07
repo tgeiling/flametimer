@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:neumorphic_ui/neumorphic_ui.dart';
+import 'package:timer/stats.dart';
 
 import 'main.dart';
 
@@ -15,7 +16,6 @@ class ShopWidget extends StatefulWidget {
 
 List<ShopItemData> shopItems = [];
 List<FireResearchTierData> tiers = [];
-List<QuestItem> questItems = [];
 
 class _ShopWidgetState extends State<ShopWidget>
     with AutomaticKeepAliveClientMixin {
@@ -40,8 +40,8 @@ class _ShopWidgetState extends State<ShopWidget>
   void initializeShopItems() async {
     initializeShopItemsFirst();
     initializeResearchItemsFirst();
-    initializeQuestItemsFirst();
-    updateQuestProgress();
+    await initializeQuestItemsFirst();
+    await updateQuestProgress(flameCounter);
 
     setState(() {});
   }
@@ -712,18 +712,27 @@ class FireResearchItem {
   }
 }
 
-// ignore: must_be_immutable
-class FireResearchTier extends StatelessWidget {
+class FireResearchTier extends StatefulWidget {
   final FireResearchTierData tierData;
   final VoidCallback onResearch;
 
   FireResearchTier({required this.tierData, required this.onResearch});
 
+  @override
+  _FireResearchTierState createState() => _FireResearchTierState();
+}
+
+class _FireResearchTierState extends State<FireResearchTier> {
   Timer? _timer;
   double _interval = 0.3; // Initial interval of 0.3 seconds
-  final double _decrement =
-      0.05; // Speed up by decreasing the interval by 0.05 seconds
+  final double _decrement = 0.05; // Speed up by decreasing the interval
   final double _minInterval = 0.1; // Minimum interval limit
+
+  @override
+  void dispose() {
+    stopBuying(); // Cancel any active timers when widget is disposed
+    super.dispose();
+  }
 
   void startBuying(FireResearchItem item, Function onResearch) {
     _timer = Timer.periodic(Duration(milliseconds: (_interval * 1000).toInt()),
@@ -748,15 +757,11 @@ class FireResearchTier extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isTierUnlocked = level >=
-        tierData.levelToUnlock; // Assuming 'level' is a global variable
+    bool isTierUnlocked = level >= widget.tierData.levelToUnlock;
 
-    // Styles for unlocked and locked tiers
     TextStyle textStyle = isTierUnlocked
         ? TextStyle(fontSize: 16)
         : TextStyle(fontSize: 16, color: Colors.grey);
-
-    Color progressBarColor = isTierUnlocked ? Colors.blue : Colors.grey;
 
     return Container(
       padding: EdgeInsets.all(8),
@@ -767,12 +772,20 @@ class FireResearchTier extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Text('Tier ${tierData.tier}',
+          Text('Tier ${widget.tierData.tier}',
               style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                   color: isTierUnlocked ? Colors.black : Colors.grey)),
-          ...tierData.researchItems.map((item) => Row(
+          if (!isTierUnlocked)
+            Text(
+              'Unlocked at level ${widget.tierData.levelToUnlock}',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.grey,
+              ),
+            ),
+          ...widget.tierData.researchItems.map((item) => Row(
                 children: [
                   Image.asset(width: 40, item.imageAsset),
                   Expanded(
@@ -782,40 +795,36 @@ class FireResearchTier extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text('${item.type} Research', style: textStyle),
-                        Text(
-                            item.description, // Smaller text under the main text
+                        Text(item.description,
                             style: TextStyle(fontSize: 12, color: Colors.grey)),
-                        Text(
-                            "${item.progress.toString()}/${item.maxProgress.toString()}"),
+                        Text("${item.progress}/${item.maxProgress}"),
                         NeumorphicProgress(
                           height: 20,
                           style: ProgressStyle(
-                            depth: 2,
-                            accent: Colors.blue,
-                            variant: Colors.blueGrey,
-                          ),
+                              depth: 2,
+                              accent: Colors.blue,
+                              variant: Colors.blueGrey),
                           percent: item.progress / item.maxProgress,
                         ),
                       ],
                     ),
                   )),
-                  SizedBox(
-                    width: 14,
-                  ),
+                  SizedBox(width: 14),
                   GestureDetector(
-                    onTapDown: isTierUnlocked
-                        ? (_) {
-                            startBuying(item, onResearch);
+                    onTap: isTierUnlocked
+                        ? () {
+                            // Single tap action
+                            item.incrementProgress();
+                            widget.onResearch();
                           }
                         : null,
-                    onTapUp: (_) {
-                      stopBuying();
-                    },
-                    onTapCancel: () {
-                      stopBuying();
-                    },
+                    onTapDown: isTierUnlocked
+                        ? (_) => startBuying(item, widget.onResearch)
+                        : null,
+                    onTapUp: (_) => stopBuying(),
+                    onTapCancel: () => stopBuying(),
                     child: Container(
-                      padding: EdgeInsets.all(10), // Adjust padding as needed
+                      padding: EdgeInsets.all(10),
                       decoration: BoxDecoration(
                         color: isTierUnlocked ? Colors.blue : Colors.grey,
                         borderRadius: BorderRadius.circular(5),
@@ -824,7 +833,7 @@ class FireResearchTier extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Image.asset('assets/icons/coin.png', width: 10),
-                          SizedBox(width: 4), // Spacing between icon and text
+                          SizedBox(width: 4),
                           Text("${item.price}"),
                         ],
                       ),
@@ -845,7 +854,9 @@ class FireResearchScreen extends StatefulWidget {
 
 class _FireResearchScreenState extends State<FireResearchScreen> {
   void onResearch() {
-    setState(() {}); // Rebuild the screen to reflect progress changes
+    if (mounted) {
+      setState(() {}); // Ensure setState is only called if mounted
+    }
   }
 
   @override
@@ -854,10 +865,7 @@ class _FireResearchScreenState extends State<FireResearchScreen> {
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         Text('Fire Research',
-            style: TextStyle(
-              fontSize: 34,
-              fontFamily: 'digi',
-            )),
+            style: TextStyle(fontSize: 34, fontFamily: 'digi')),
         Expanded(
           child: ListView.builder(
             itemCount: tiers.length,
@@ -872,45 +880,32 @@ class _FireResearchScreenState extends State<FireResearchScreen> {
   }
 }
 
-class QuestItem {
-  String id;
-  String title;
-  String description;
-  int level;
-  bool isDone;
-  bool isRewardTaken;
-  int progress;
-  int maxValue;
-  bool isGoldReward; // True for gold, false for item
-  String rewardValue;
-  String? itemImagePath; // Path to item image, used if the reward is an item
-  String? rewardDescription;
-  int? goldValue; // Optional description for item rewards
-
-  QuestItem({
-    required this.id,
-    required this.title,
-    required this.description,
-    required this.level,
-    required this.isDone,
-    required this.isRewardTaken,
-    required this.progress,
-    required this.maxValue,
-    required this.isGoldReward,
-    required this.rewardValue,
-    this.itemImagePath,
-    this.rewardDescription,
-    this.goldValue,
-  });
-
-  void incrementProgress() {
-    if (progress < maxValue) {
-      progress++;
-    }
-  }
+class QuestDialog extends StatefulWidget {
+  @override
+  _QuestDialogState createState() => _QuestDialogState();
 }
 
-class QuestDialog extends StatelessWidget {
+class _QuestDialogState extends State<QuestDialog> {
+  Timer? _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    // Start a timer that updates every second
+    _timer = Timer.periodic(Duration(seconds: 1), (Timer timer) async {
+      if (mounted) {
+        setState(() {});
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    // Cancel the timer when the widget is disposed
+    _timer?.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     int _getSortKey(QuestItem quest) {
@@ -927,7 +922,6 @@ class QuestDialog extends StatelessWidget {
       ..sort((a, b) {
         int sortKeyA = _getSortKey(a);
         int sortKeyB = _getSortKey(b);
-
         return sortKeyA.compareTo(sortKeyB);
       });
 
@@ -955,8 +949,8 @@ class QuestDialog extends StatelessWidget {
                               !sortedQuestItems[index].isRewardTaken) {
                             _showClaimRewardDialog(
                                 context, sortedQuestItems[index], () {
-                              (context as Element)
-                                  .markNeedsBuild(); // Refresh the UI after claiming a reward
+                              setState(
+                                  () {}); // Refresh the UI after claiming a reward
                             });
                           }
                         },
@@ -974,10 +968,21 @@ class QuestDialog extends StatelessWidget {
 
   Future<void> _updateRewardTakenState(QuestItem quest, bool isTaken) async {
     final prefs = await SharedPreferences.getInstance();
+
+    // Update coin count if the quest has a gold reward
     if (quest.goldValue != null) {
       coinCount += quest.goldValue!;
+      await prefs.setInt('coinCount', coinCount); // Save updated coin count
     }
-    await prefs.setBool('${quest.id}_isRewardTaken', isTaken);
+
+    // Find the quest in questItems and update its isRewardTaken property
+    int questIndex = questItems.indexWhere((q) => q.id == quest.id);
+    if (questIndex != -1) {
+      questItems[questIndex].isRewardTaken = isTaken;
+    }
+
+    // Save the updated quests list to SharedPreferences
+    await saveQuestsToPreferences();
   }
 
   void _showClaimRewardDialog(
@@ -992,17 +997,17 @@ class QuestDialog extends StatelessWidget {
           actions: <Widget>[
             TextButton(
               child: Text('Claim!'),
-              onPressed: () {
-                _updateRewardTakenState(quest, true);
-                quest.isRewardTaken = true;
+              onPressed: () async {
+                // Update the reward taken state and await its completion
+                await _updateRewardTakenState(quest, true);
+
                 Navigator.of(context).pop(); // Close the dialog
                 onClaimed(); // Callback to refresh the UI
               },
             ),
             TextButton(
               child: Text('Cancel'),
-              onPressed: () => Navigator.of(context)
-                  .pop(), // Close the dialog without claiming
+              onPressed: () => Navigator.of(context).pop(), // Close the dialog
             ),
           ],
         );

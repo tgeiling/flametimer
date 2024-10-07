@@ -185,10 +185,12 @@ class _MainFrameState extends State<MainFrame>
     with AutomaticKeepAliveClientMixin, WidgetsBindingObserver {
   late Timer _freeTimeInterval;
   late Timer _productiveInterval;
+  late Timer _pauseInterval = Timer(Duration.zero, () {});
 
   String _activeMode = "freeTime";
   late int _freeTimeTotalSeconds;
   late int _productiveTimeTotalSeconds;
+  late int _pauseTimeTotalSeconds;
 
   @override
   void initState() {
@@ -699,6 +701,10 @@ class _MainFrameState extends State<MainFrame>
       return 'assets/campfires/smokeFire.gif';
     }
 
+    if (_activeMode == "pause" && flameCounter >= 0) {
+      return 'assets/campfires/smokeFire.gif';
+    }
+
     for (var condition in conditions) {
       // Extracting and checking types from the map
       final limit = condition['limit'];
@@ -877,15 +883,52 @@ class _MainFrameState extends State<MainFrame>
         return;
       }
       _productiveInterval = Timer.periodic(Duration(seconds: 1), _stopWatch);
+    } else if (_activeMode == "pause") {
+      _activeMode = "productive";
+      _printLabel(_activeMode);
+      _productiveInterval = Timer.periodic(Duration(seconds: 1), _stopWatch);
+    }
+
+    if (_pauseInterval.isActive) {
+      _pauseInterval.cancel();
+    }
+    _pauseTimeTotalSeconds = 0;
+    brake = false;
+  }
+
+  void _startAfterPause() {
+    if (_activeMode == "freeTime") {
+      if (_freeTimeInterval != null && _freeTimeInterval.isActive) {
+        return;
+      }
+      _freeTimeInterval = Timer.periodic(Duration(seconds: 1), _stopWatch);
+    } else if (_activeMode == "productive") {
+      if (_productiveInterval != null && _productiveInterval.isActive) {
+        return;
+      }
+      _productiveInterval = Timer.periodic(Duration(seconds: 1), _stopWatch);
+    }
+
+    if (_activeMode == "pause") {
+      if (_pauseInterval != null && _pauseInterval.isActive) {
+        return;
+      }
+      _pauseInterval = Timer.periodic(Duration(seconds: 1), (timer) {
+        _pauseTimeTotalSeconds++;
+        print("Pause Counter is at  $_pauseTimeTotalSeconds");
+      });
     }
     brake = false;
   }
 
-  void _stop() {
+  void _stop([bool pause = true]) {
     if (_activeMode == "freeTime") {
       _freeTimeInterval.cancel();
     } else if (_activeMode == "productive") {
       _productiveInterval.cancel();
+    }
+    if (pause) {
+      _startPauseTracking(_pauseInterval);
     }
   }
 
@@ -895,26 +938,33 @@ class _MainFrameState extends State<MainFrame>
     } else if (_activeMode == "productive") {
       _productiveInterval.cancel();
     }
+    if (_activeMode == "pause") {
+      _pauseInterval.cancel();
+    }
     brake = true;
   }
 
   void _reset() {
     _freeTimeInterval.cancel();
     _productiveInterval.cancel();
+    _pauseInterval.cancel();
     _freeTimeTotalSeconds = 0;
     _productiveTimeTotalSeconds = 0;
+    _pauseTimeTotalSeconds = 0;
     _updateTime(0, 0, 0);
   }
 
   void _resetTimers() {
     _freeTimeInterval = Timer.periodic(Duration(seconds: 1), _stopWatch);
     _productiveInterval = Timer.periodic(Duration(seconds: 1), _stopWatch);
+    _pauseInterval = Timer.periodic(Duration(seconds: 1), _stopWatch);
     _freeTimeInterval.cancel();
     _productiveInterval.cancel();
+    _pauseInterval.cancel();
   }
 
   void _switchTime() {
-    _stop();
+    _stop(false);
 
     if (_activeMode == "freeTime") {
       setState(() {
@@ -923,6 +973,10 @@ class _MainFrameState extends State<MainFrame>
     } else if (_activeMode == "productive") {
       setState(() {
         _activeMode = "freeTime";
+      });
+    } else if (_activeMode == "pause") {
+      setState(() {
+        _activeMode = "productive";
       });
     }
 
@@ -948,15 +1002,41 @@ class _MainFrameState extends State<MainFrame>
   }
 
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
+  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     super.didChangeAppLifecycleState(state);
-    if (_productiveInterval.isActive ||
-        _freeTimeInterval.isActive && state == AppLifecycleState.paused) {
+    if ((_productiveInterval.isActive ||
+            _freeTimeInterval.isActive ||
+            _pauseInterval.isActive) &&
+        state == AppLifecycleState.paused) {
       _saveCurrentTime();
       _brakeStop();
     } else if (brake == true && state == AppLifecycleState.resumed) {
+      // start gets triggerd before updateTimerOnResume so instead of pause continued productive time gets continued
+      // just add active mode pause
+
       _updateTimerOnResume();
-      _start();
+      _startAfterPause();
+    }
+  }
+
+  void _startPauseTracking(Timer timer) {
+    if (!_pauseInterval.isActive) {
+      setState(() {
+        _activeMode = "pause";
+        _printLabel(_activeMode);
+      });
+      _pauseInterval = Timer.periodic(Duration(seconds: 1), (timer) {
+        _pauseTimeTotalSeconds++;
+
+        int decrement = (flameCounter / 1800).ceil();
+        flameCounter = flameCounter - decrement;
+        if (flameCounter < 0) {
+          flameCounter = 0;
+        }
+
+        print("The Flame is at: $flameCounter");
+        print("Pause Counter is at  $_pauseTimeTotalSeconds");
+      });
     }
   }
 
@@ -972,9 +1052,15 @@ class _MainFrameState extends State<MainFrame>
     int currentTime = DateTime.now().millisecondsSinceEpoch;
     int elapsedTimeInSeconds = (currentTime - lastPauseTime) ~/ 1000;
 
-    if (_activeMode == "freeTime" && _freeTimeInterval.isActive) {
+    if (_activeMode == "pause") {
+      _pauseTimeTotalSeconds += elapsedTimeInSeconds;
+    } else if (_activeMode == "freeTime" &&
+        _freeTimeInterval != null &&
+        _freeTimeInterval!.isActive) {
       _freeTimeTotalSeconds += elapsedTimeInSeconds;
-    } else if (_activeMode == "productive" && _productiveInterval.isActive) {
+    } else if (_activeMode == "productive" &&
+        _productiveInterval != null &&
+        _productiveInterval!.isActive) {
       _productiveTimeTotalSeconds += elapsedTimeInSeconds;
       flameCounter += elapsedTimeInSeconds;
     }
@@ -1150,7 +1236,7 @@ class _MainFrameState extends State<MainFrame>
               style: TextStyle(
                 fontFamily: 'digi',
                 color: Colors.white,
-                fontSize: 20,
+                fontSize: 28,
               ),
             ),
           ),
@@ -1395,7 +1481,7 @@ class _FlameCounterWidgetState extends State<FlameCounterWidget>
                   Text(
                     '+' + difference.toString(),
                     style: TextStyle(
-                        fontSize: 24,
+                        fontSize: 22,
                         fontFamily: 'digi',
                         color: Colors.white,
                         fontWeight: FontWeight.bold),
