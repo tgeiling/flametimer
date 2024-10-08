@@ -8,6 +8,7 @@ import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'stats.dart';
 import 'achivements.dart';
 import 'shop.dart';
+import 'elements.dart';
 
 import 'sharedFunctions.dart';
 
@@ -1078,137 +1079,176 @@ class _MainFrameState extends State<MainFrame>
 
   @override
   Widget build(BuildContext context) {
+    bool isTallScreen = MediaQuery.of(context).size.height > 730;
+    double top = 0;
+
+    if (isTallScreen) {
+      top = 40;
+    }
+
     super.build(context);
     return Container(
-        decoration: BoxDecoration(
-          color: Color.fromARGB(255, 231, 231, 231),
-          border: Border.all(
-            color: Color.fromARGB(255, 187, 187, 187),
-            width: 2.0,
-          ),
-          borderRadius: BorderRadius.circular(4.0),
+      decoration: BoxDecoration(
+        color: Color.fromARGB(255, 231, 231, 231),
+        border: Border.all(
+          color: Color.fromARGB(255, 187, 187, 187),
+          width: 2.0,
         ),
-        child: Padding(
-          padding: EdgeInsets.only(top: 50),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(height: 30),
-              Text(
-                label,
-                style: TextStyle(
-                    fontSize: 52,
-                    fontFamily: 'digi',
-                    fontWeight: FontWeight.bold,
-                    color: const Color.fromARGB(255, 46, 46, 46)),
+        borderRadius: BorderRadius.circular(4.0),
+      ),
+      child: Padding(
+        padding: EdgeInsets.only(top: top),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(height: 30),
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 52,
+                fontFamily: 'digi',
+                fontWeight: FontWeight.bold,
+                color: const Color.fromARGB(255, 46, 46, 46),
               ),
-              Expanded(
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Stack(
-                        children: <Widget>[
-                          campfireImageSwitcher(),
-                          Positioned(
-                            top: 10,
-                            right: 25,
-                            child: CoinCountDisplay(),
-                          ),
-                          Positioned(
-                              top: 50,
-                              right: 27,
-                              child: CuteLittleWidget(
-                                flameCounterValue:
-                                    calculateTotalFlameMultiplier(
-                                        shopItems, tiers),
-                                coinCounterValue: calculateTotalCoinMultiplier(
-                                    shopItems, tiers),
-                                expCounterValue: calculateTotalExpMultiplier(
-                                    shopItems, tiers),
-                                levelMultiplierValue: flameCounterMultiplier,
-                                flameIconPath: 'assets/icons/item4.png',
-                                coinIconPath: 'assets/icons/coin.png',
-                                expIconPath: 'assets/icons/item6.png',
-                                levelIconPath: 'assets/icons/item1.png',
-                              )),
-                          Positioned(
-                            top: 0,
-                            right: 35,
-                            child:
-                                FlameCounterWidget(flameCounter: flameCounter),
-                          ),
-                          Positioned(
-                              bottom: 30,
-                              left: 120,
-                              child: Container(
-                                padding: EdgeInsets.only(
-                                    left: 8, right: 8, top: 4, bottom: 4),
-                                decoration: BoxDecoration(
-                                  color: Colors.grey.shade800,
-                                  border:
-                                      Border.all(color: Colors.grey.shade300),
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
-                                child: Text(
-                                  "Lv: " + flameLevel.toString(),
-                                  style: TextStyle(
-                                      fontSize: 22,
-                                      fontFamily: 'digi',
-                                      fontWeight: FontWeight.bold,
-                                      color: getFlameColor(flameLevel)),
-                                ),
-                              )),
-                          Positioned(
-                              top: 150,
-                              right: 20,
-                              child: Container(
-                                padding: EdgeInsets.all(3),
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    image: AssetImage(
-                                        'assets/frame4.png'), // Replace with your image path
-                                    fit: BoxFit.fill,
+            ),
+            Expanded(
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Stack(
+                      children: <Widget>[
+                        campfireImageSwitcher(),
+                        Positioned(
+                          top: 10,
+                          right: 25,
+                          child: CoinCountDisplay(),
+                        ),
+                        Positioned(
+                          top: 50,
+                          right: 27,
+                          child: GestureDetector(
+                            onTap: () {
+                              OverlayEntry? overlayEntry;
+
+                              overlayEntry = OverlayEntry(
+                                builder: (context) => GestureDetector(
+                                  onTap: () {
+                                    overlayEntry?.remove();
+                                  },
+                                  child: Stack(
+                                    children: <Widget>[
+                                      Container(
+                                        color: Colors.transparent,
+                                      ),
+                                      Positioned(
+                                        top: 250,
+                                        right: 90,
+                                        child: SpeechBubbleRight(
+                                          message:
+                                              ' -Flame Multiplier\n -Coin Multiplier\n -EXP Multiplier\n -Overall Multiplier',
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                child: Wrap(
-                                  direction: Axis.vertical,
-                                  spacing: 5,
-                                  runSpacing: 2,
-                                  children: shopItems
-                                      .where((item) => item.isEquiped)
-                                      .map((item) => SizedBox(
-                                            width: 34,
-                                            height: 34,
-                                            child: Image.asset(
-                                              item.imagePath,
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ))
-                                      .toList(),
-                                ),
-                              )),
-                        ],
-                      ),
-                      timerWrapper(context),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          _buildImageButton(
-                              'assets/icons/switch.png', _switchTime),
-                          _buildImageButton('assets/icons/play.png', _start),
-                          _buildImageButton('assets/icons/pause.png', _stop),
-                          _buildImageButton('assets/icons/trash.png', _reset),
-                        ],
-                      ),
-                    ],
-                  ),
+                              );
+
+                              Overlay.of(context)?.insert(overlayEntry);
+                            },
+                            child: CuteLittleWidget(
+                              flameCounterValue: calculateTotalFlameMultiplier(
+                                  shopItems, tiers),
+                              coinCounterValue: calculateTotalCoinMultiplier(
+                                  shopItems, tiers),
+                              expCounterValue:
+                                  calculateTotalExpMultiplier(shopItems, tiers),
+                              levelMultiplierValue: flameCounterMultiplier,
+                              flameIconPath: 'assets/icons/item4.png',
+                              coinIconPath: 'assets/icons/coin.png',
+                              expIconPath: 'assets/icons/item6.png',
+                              levelIconPath: 'assets/icons/item1.png',
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          top: 0,
+                          right: 35,
+                          child: FlameCounterWidget(flameCounter: flameCounter),
+                        ),
+                        Positioned(
+                          bottom: 30,
+                          left: 120,
+                          child: Container(
+                            padding: EdgeInsets.only(
+                                left: 8, right: 8, top: 4, bottom: 4),
+                            decoration: BoxDecoration(
+                              color: Colors.grey.shade800,
+                              border: Border.all(color: Colors.grey.shade300),
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: Text(
+                              "Lv: " + flameLevel.toString(),
+                              style: TextStyle(
+                                fontSize: 22,
+                                fontFamily: 'digi',
+                                fontWeight: FontWeight.bold,
+                                color: getFlameColor(flameLevel),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          top: 150,
+                          right: 20,
+                          child: Container(
+                            padding: EdgeInsets.all(3),
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: AssetImage('assets/frame4.png'),
+                                fit: BoxFit.fill,
+                              ),
+                            ),
+                            child: Wrap(
+                              direction: Axis.vertical,
+                              spacing: 5,
+                              runSpacing: 2,
+                              children: shopItems
+                                  .where((item) => item.isEquiped)
+                                  .map((item) => SizedBox(
+                                        width: 34,
+                                        height: 34,
+                                        child: Image.asset(
+                                          item.imagePath,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ))
+                                  .toList(),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    timerWrapper(context),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        _buildImageButton(
+                            'assets/icons/switch.png', _switchTime),
+                        _buildImageButton('assets/icons/play.png', _start),
+                        _buildImageButton('assets/icons/pause.png', _stop),
+                        _buildImageButton('assets/icons/trash.png', _reset),
+                      ],
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
-        ));
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget CoinCountDisplay() {
@@ -1246,37 +1286,68 @@ class _MainFrameState extends State<MainFrame>
   }
 
   Widget timerWrapper(BuildContext context) {
-    // Check the screen height
-    //bool isTallScreen = MediaQuery.of(context).size.height < 730;
+    bool isTallScreen = MediaQuery.of(context).size.height > 730;
 
-    if (_activeMode == "freeTime") {
-      // Use Column for taller screens
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          _buildTimer(
-            "Free Time",
-            freeTimeHours,
-            freeTimeMinutes,
-            freeTimeSeconds,
-            const Color.fromARGB(255, 35, 115, 235),
-          ),
-        ],
-      );
+    if (isTallScreen) {
+      if (_activeMode == "freeTime") {
+        // Use Column for taller screens
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _buildTimer(
+              "Free Time",
+              freeTimeHours,
+              freeTimeMinutes,
+              freeTimeSeconds,
+              const Color.fromARGB(255, 35, 115, 235),
+            ),
+          ],
+        );
+      } else {
+        // Use Row for shorter screens
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _buildTimer(
+              "Productive Time",
+              productiveHours,
+              productiveMinutes,
+              productiveSeconds,
+              const Color.fromARGB(255, 202, 51, 51),
+            ),
+          ],
+        );
+      }
     } else {
-      // Use Row for shorter screens
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          _buildTimer(
-            "Productive Time",
-            productiveHours,
-            productiveMinutes,
-            productiveSeconds,
-            const Color.fromARGB(255, 202, 51, 51),
-          ),
-        ],
-      );
+      if (_activeMode == "freeTime") {
+        // Use Column for taller screens
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _buildSmallTimer(
+              "Free Time",
+              freeTimeHours,
+              freeTimeMinutes,
+              freeTimeSeconds,
+              const Color.fromARGB(255, 35, 115, 235),
+            ),
+          ],
+        );
+      } else {
+        // Use Row for shorter screens
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _buildSmallTimer(
+              "Productive Time",
+              productiveHours,
+              productiveMinutes,
+              productiveSeconds,
+              const Color.fromARGB(255, 202, 51, 51),
+            ),
+          ],
+        );
+      }
     }
   }
 
@@ -1349,6 +1420,7 @@ class _MainFrameState extends State<MainFrame>
     String hours,
     String minutes,
     String seconds,
+    Color color,
   ) {
     return Column(
       children: [
@@ -1357,17 +1429,15 @@ class _MainFrameState extends State<MainFrame>
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _buildSmallTimeSpan(hours),
+              _buildSmallTimeSpan(hours, color),
               Text(
                 ":",
                 style: TextStyle(
-                    color: Colors.grey[800],
-                    fontSize: 20,
-                    fontWeight: FontWeight.normal),
+                    color: color, fontSize: 20, fontWeight: FontWeight.normal),
               ),
-              _buildSmallTimeSpan(minutes),
+              _buildSmallTimeSpan(minutes, color),
               Text(":", style: TextStyle(fontSize: 20)),
-              _buildSmallTimeSpan(seconds),
+              _buildSmallTimeSpan(seconds, color),
             ],
           ),
         )
@@ -1375,7 +1445,7 @@ class _MainFrameState extends State<MainFrame>
     );
   }
 
-  Widget _buildSmallTimeSpan(String value) {
+  Widget _buildSmallTimeSpan(String value, Color color) {
     return Container(
         decoration: BoxDecoration(
           image: DecorationImage(
@@ -1391,7 +1461,7 @@ class _MainFrameState extends State<MainFrame>
               child: Text(
                 value,
                 style: TextStyle(
-                    color: Color.fromARGB(255, 35, 115, 235),
+                    color: color,
                     fontSize: 26,
                     fontWeight: FontWeight.normal,
                     fontFamily: 'digi'),
