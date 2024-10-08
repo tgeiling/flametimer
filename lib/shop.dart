@@ -171,18 +171,7 @@ class _ShopWidgetState extends State<ShopWidget>
                         builder: (context) => QuestDialog(),
                       );
                     },
-                    child: Neumorphic(
-                      padding: EdgeInsets.all(6),
-                      margin: EdgeInsets.only(top: 10, left: 5),
-                      //child: Image.asset(width: 40, "assets/icons/research.png"),
-                      child: Text(
-                        "Quests",
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.grey.shade600),
-                      ),
-                    ),
+                    child: QuestsButton(),
                   ),
                 ],
               )),
@@ -580,16 +569,37 @@ class ShopItemData {
     required this.levelNeeded,
   });
 
-  ShopItemData copyWith({bool? isBought, bool? isEquiped}) {
+  // Add toMap method
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'title': title,
+      'description': description,
+      'price': price,
+      'imagePath': imagePath,
+      'isBought': isBought,
+      'isEquiped': isEquiped,
+      'flameMultiplier': flameMultiplier,
+      'coinMultiplier': coinMultiplier,
+      'expMultiplier': expMultiplier,
+      'levelNeeded': levelNeeded,
+    };
+  }
+
+  // Add fromMap factory constructor
+  factory ShopItemData.fromMap(Map<String, dynamic> map) {
     return ShopItemData(
-      id: id,
-      title: title,
-      description: description,
-      price: price,
-      imagePath: imagePath,
-      isBought: isBought ?? this.isBought,
-      isEquiped: isEquiped ?? this.isEquiped,
-      levelNeeded: levelNeeded,
+      id: map['id'],
+      title: map['title'],
+      description: map['description'],
+      price: map['price'],
+      imagePath: map['imagePath'],
+      isBought: map['isBought'] ?? false,
+      isEquiped: map['isEquiped'] ?? false,
+      flameMultiplier: map['flameMultiplier']?.toDouble() ?? 0.0,
+      coinMultiplier: map['coinMultiplier']?.toDouble() ?? 0.0,
+      expMultiplier: map['expMultiplier']?.toDouble() ?? 0.0,
+      levelNeeded: map['levelNeeded'],
     );
   }
 }
@@ -969,13 +979,29 @@ class _QuestDialogState extends State<QuestDialog> {
   Future<void> _updateRewardTakenState(QuestItem quest, bool isTaken) async {
     final prefs = await SharedPreferences.getInstance();
 
+    // Check if the quest has an item reward
+    if (quest.rewardItem != null) {
+      ShopItemData rewardItem = quest.rewardItem!;
+
+      // Find the item in shopItems and update its isBought property
+      int itemIndex = shopItems.indexWhere((item) => item.id == rewardItem.id);
+      if (itemIndex != -1) {
+        shopItems[itemIndex].isBought = true;
+        await prefs.setBool(rewardItem.id, true); // Save the purchased state
+      } else {
+        // If the item is not found, add it to shopItems
+        shopItems.add(rewardItem);
+        await prefs.setBool(rewardItem.id, true); // Save the purchased state
+      }
+    }
+
     // Update coin count if the quest has a gold reward
-    if (quest.goldValue != null) {
+    if (quest.isGoldReward && quest.goldValue != null) {
       coinCount += quest.goldValue!;
       await prefs.setInt('coinCount', coinCount); // Save updated coin count
     }
 
-    // Find the quest in questItems and update its isRewardTaken property
+    // Update the quest's isRewardTaken state
     int questIndex = questItems.indexWhere((q) => q.id == quest.id);
     if (questIndex != -1) {
       questItems[questIndex].isRewardTaken = isTaken;
@@ -983,6 +1009,9 @@ class _QuestDialogState extends State<QuestDialog> {
 
     // Save the updated quests list to SharedPreferences
     await saveQuestsToPreferences();
+
+    // Save the updated shop items
+    await saveShopItemsToPreferences();
   }
 
   void _showClaimRewardDialog(
@@ -1121,5 +1150,54 @@ class QuestItemWidget extends StatelessWidget {
         },
       );
     }
+  }
+}
+
+class QuestsButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // Calculate the number of quests that are done but not claimed
+    int unclaimedQuests = questItems
+        .where((quest) => quest.isDone && !quest.isRewardTaken)
+        .length;
+
+    return Stack(
+      clipBehavior: Clip.none, // Allow overflow to show the badge properly
+      children: [
+        Neumorphic(
+          padding: EdgeInsets.all(6),
+          margin: EdgeInsets.only(top: 10, left: 5),
+          child: Text(
+            "Quests",
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.grey.shade600,
+            ),
+          ),
+        ),
+        if (unclaimedQuests > 0)
+          Positioned(
+            // Adjust position as needed
+            right: -5,
+            top: -5,
+            child: Container(
+              padding: EdgeInsets.all(6),
+              decoration: BoxDecoration(
+                color: Colors.red,
+                shape: BoxShape.circle,
+              ),
+              child: Text(
+                '$unclaimedQuests',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+          ),
+      ],
+    );
   }
 }

@@ -351,7 +351,7 @@ void initializeShopItemsFirst() async {
       id: 'item1',
       title: "How to make a big Fire",
       description: "Gives 1.5x more flame genration",
-      price: 100,
+      price: 250,
       imagePath: "assets/icons/item1.png",
       isBought: await prefs.getBool('item1') ?? false,
       isEquiped: await prefs.getBool('item1Equiped') ?? false,
@@ -362,31 +362,35 @@ void initializeShopItemsFirst() async {
       id: 'item2',
       title: "Art of Hellfire",
       description: "Gives 15x more flame generation but exp is locked",
-      price: 100,
+      price: 10000,
       imagePath: "assets/icons/item2.png",
       isBought: await prefs.getBool('item2') ?? false,
       isEquiped: await prefs.getBool('item2Equiped') ?? false,
       flameMultiplier: 15.0,
-      levelNeeded: 2,
+      expMultiplier: 0.0,
+      levelNeeded: 3,
     ),
     ShopItemData(
       id: 'item3',
-      title: "Starting Powder",
-      description: "The flame starts significally faster",
-      price: 100,
+      title: "Working Powder",
+      description: "Gives 2x Exp gain",
+      price: 4000,
       imagePath: "assets/icons/item3.png",
       isBought: await prefs.getBool('item3') ?? false,
       isEquiped: await prefs.getBool('item3Equiped') ?? false,
+      expMultiplier: 2.0,
       levelNeeded: 4,
     ),
     ShopItemData(
       id: 'item4',
       title: "Ring of fire",
-      description: "Slows down decaying rate when not productive",
-      price: 100,
+      description: "Gives 2x Flame gain and 2x Coin gain",
+      price: 6000,
       imagePath: "assets/icons/item4.png",
       isBought: await prefs.getBool('item4') ?? false,
       isEquiped: await prefs.getBool('item4Equiped') ?? false,
+      flameMultiplier: 2.0,
+      coinMultiplier: 2.0,
       levelNeeded: 5,
     ),
     ShopItemData(
@@ -394,7 +398,7 @@ void initializeShopItemsFirst() async {
       title: "Cursed Charm",
       description:
           "Slows flame generation by 0.2x but increases coin generation by 4x",
-      price: 100,
+      price: 20000,
       imagePath: "assets/icons/item5.png",
       isBought: await prefs.getBool('item5') ?? false,
       isEquiped: await prefs.getBool('item5Equiped') ?? false,
@@ -406,7 +410,7 @@ void initializeShopItemsFirst() async {
       id: 'item6',
       title: "Lucky Charm",
       description: "Randomly gives bigger chunks of money",
-      price: 100,
+      price: 100000,
       imagePath: "assets/icons/item6.png",
       isBought: await prefs.getBool('item6') ?? false,
       isEquiped: await prefs.getBool('item6Equiped') ?? false,
@@ -435,7 +439,7 @@ void initializeShopItemsFirst() async {
       isBought: prefs.getBool('item8') ?? false,
       isEquiped: await prefs.getBool('item8Equiped') ?? false,
       expMultiplier: 5.0,
-      levelNeeded: 7,
+      levelNeeded: 8,
     ),
     ShopItemData(
       id: 'item9',
@@ -446,7 +450,7 @@ void initializeShopItemsFirst() async {
       isBought: prefs.getBool('item9') ?? false,
       isEquiped: await prefs.getBool('item9Equiped') ?? false,
       expMultiplier: 4.0,
-      levelNeeded: 8,
+      levelNeeded: 9,
     ),
     ShopItemData(
       id: 'item10',
@@ -457,18 +461,18 @@ void initializeShopItemsFirst() async {
       isBought: prefs.getBool('item10') ?? false,
       isEquiped: await prefs.getBool('item10Equiped') ?? false,
       coinMultiplier: 2.5,
-      levelNeeded: 9,
+      levelNeeded: 10,
     ),
     ShopItemData(
       id: 'item11',
       title: "Eternal Flame",
       description: "6x flame gain",
-      price: 10,
+      price: 200000,
       imagePath: "assets/icons/item11.png",
       isBought: prefs.getBool('item11') ?? false,
       isEquiped: await prefs.getBool('item11Equiped') ?? false,
       flameMultiplier: 6.0,
-      levelNeeded: 10,
+      levelNeeded: 11,
     ),
     ShopItemData(
       id: 'item12',
@@ -485,7 +489,7 @@ void initializeShopItemsFirst() async {
       id: 'item13',
       title: "Taxes",
       description: "Make them pay 3.0x Coin gain",
-      price: 80000,
+      price: 800000,
       imagePath: "assets/icons/item13.png",
       isBought: prefs.getBool('item13') ?? false,
       isEquiped: await prefs.getBool('item13Equiped') ?? false,
@@ -495,27 +499,106 @@ void initializeShopItemsFirst() async {
     ShopItemData(
       id: 'item14',
       title: "Moon of the Dark",
-      description: "10x Exp and 10x Coin gain at night",
-      price: 80000,
+      description: "10x Exp and 10x Coin gain",
+      price: 800000,
       imagePath: "assets/icons/item14.png",
       isBought: prefs.getBool('item14') ?? false,
       isEquiped: await prefs.getBool('item14Equiped') ?? false,
       coinMultiplier: 10.0,
       flameMultiplier: 10.0,
-      levelNeeded: 14,
+      levelNeeded: 16,
     ),
     ShopItemData(
       id: 'item15',
       title: "Latom",
       description: "2x Exp, 2x Coin, 2x Flame gain",
-      price: 80000,
+      price: 2000000,
       imagePath: "assets/icons/item15.png",
       isBought: prefs.getBool('item15') ?? false,
       isEquiped: await prefs.getBool('item15Equiped') ?? false,
       coinMultiplier: 10.0,
       flameMultiplier: 10.0,
       expMultiplier: 10.0,
-      levelNeeded: 14,
+      levelNeeded: 18,
+    ),
+    ShopItemData(
+      id: 'item16',
+      title: "Blazing Cauldron",
+      description: "Gives 5x Flame gain and 2.5x Coin gain",
+      price: 1000000,
+      imagePath: "assets/icons/item16.png", // Image of the cauldron
+      isBought: await prefs.getBool('item16') ?? false,
+      isEquiped: await prefs.getBool('item16Equiped') ?? false,
+      flameMultiplier: 5.0,
+      coinMultiplier: 2.5,
+      levelNeeded: 20,
+    ),
+    ShopItemData(
+      id: 'item17',
+      title: "Sun's Fury",
+      description: "Flame generation increases by 5x",
+      price: 500000,
+      imagePath: "assets/icons/item17.png", // Image of the sun icon
+      isBought: await prefs.getBool('item17') ?? false,
+      isEquiped: await prefs.getBool('item17Equiped') ?? false,
+      flameMultiplier: 5.0,
+      levelNeeded: 21,
+    ),
+    ShopItemData(
+      id: 'item18',
+      title: "Fiery Pepper",
+      description: "Increases flame and exp by 3x",
+      price: 250000,
+      imagePath: "assets/icons/item18.png", // Image of the pepper
+      isBought: await prefs.getBool('item18') ?? false,
+      isEquiped: await prefs.getBool('item18Equiped') ?? false,
+      flameMultiplier: 3.0,
+      expMultiplier: 3.0,
+      levelNeeded: 22,
+    ),
+    ShopItemData(
+      id: 'item19',
+      title: "Heart of the Flame",
+      description: "Grants 10x Flame generation",
+      price: 2000000,
+      imagePath: "assets/icons/item19.png", // Image of the heart
+      isBought: await prefs.getBool('item19') ?? false,
+      isEquiped: await prefs.getBool('item19Equiped') ?? false,
+      flameMultiplier: 10.0,
+      levelNeeded: 23,
+    ),
+    ShopItemData(
+      id: 'item20',
+      title: "Molten Core",
+      description: "Increases Flame gain by 80x",
+      price: 750000,
+      imagePath: "assets/icons/item20.png", // Image of molten core
+      isBought: await prefs.getBool('item20') ?? false,
+      isEquiped: await prefs.getBool('item20Equiped') ?? false,
+      flameMultiplier: 80.0,
+      levelNeeded: 24,
+    ),
+    ShopItemData(
+      id: 'item21',
+      title: "Flame Lantern",
+      description: "Gives 200x EXP gain",
+      price: 1200000,
+      imagePath: "assets/icons/item21.png", // Image of the lantern
+      isBought: await prefs.getBool('item21') ?? false,
+      isEquiped: await prefs.getBool('item21Equiped') ?? false,
+      expMultiplier: 200.0,
+      levelNeeded: 25,
+    ),
+    ShopItemData(
+      id: 'item22',
+      title: "Toxic Blaze",
+      description: "Gives 200x Coin gain",
+      price: 1500000,
+      imagePath: "assets/icons/item22.png", // Image of toxic green flame
+      isBought: await prefs.getBool('item22') ?? false,
+      isEquiped: await prefs.getBool('item22Equiped') ?? false,
+      coinMultiplier: 200.0,
+      levelNeeded: 26,
     ),
   ];
 }
@@ -649,7 +732,7 @@ enum QuestType {
   EarnExperience,
   GenerateFlame,
   CollectProductiveTime,
-  CollectFreeTimeProductiveTime,
+  CollectFreeTimeTime,
   MeetDailyProductiveGoal,
   MeetFreeTimeProductiveGoal,
 }
@@ -670,6 +753,7 @@ class QuestItem {
   String? itemImagePath;
   String? rewardDescription;
   QuestType questType;
+  ShopItemData? rewardItem;
 
   QuestItem({
     required this.id,
@@ -686,6 +770,7 @@ class QuestItem {
     this.itemImagePath,
     this.rewardDescription,
     required this.questType,
+    this.rewardItem,
   });
 
   // Convert QuestItem to a Map for JSON encoding
@@ -705,6 +790,7 @@ class QuestItem {
       'itemImagePath': itemImagePath,
       'rewardDescription': rewardDescription,
       'questType': questType.toString(),
+      'rewardItem': rewardItem?.toMap(),
     };
   }
 
@@ -727,6 +813,9 @@ class QuestItem {
       questType: QuestType.values.firstWhere(
           (e) => e.toString() == map['questType'],
           orElse: () => QuestType.CollectCoins),
+      rewardItem: map['rewardItem'] != null
+          ? ShopItemData.fromMap(map['rewardItem'])
+          : null,
     );
   }
 }
@@ -769,7 +858,7 @@ Future<void> generateRandomQuests() async {
     QuestType.EarnExperience,
     QuestType.GenerateFlame,
     QuestType.CollectProductiveTime,
-    QuestType.CollectFreeTimeProductiveTime,
+    QuestType.CollectFreeTimeTime,
     QuestType.MeetDailyProductiveGoal,
     QuestType.MeetFreeTimeProductiveGoal,
   ];
@@ -778,12 +867,12 @@ Future<void> generateRandomQuests() async {
   List<QuestItem> generatedQuests = [];
   int questIdCounter = 1;
   for (QuestType questType in allQuestTypes) {
-    QuestItem quest = generateQuestForType(questType, questIdCounter++);
+    QuestItem quest = await generateQuestForType(questType, questIdCounter++);
     generatedQuests.add(quest);
   }
 
   // Now generate additional quests, ensuring not to duplicate quest types excessively
-  while (generatedQuests.length < 10) {
+  while (generatedQuests.length < 7) {
     // Limit the number of duplicates to at most 2 per quest type
     // Count how many times each quest type has been used
     Map<QuestType, int> questTypeCounts = {};
@@ -806,7 +895,7 @@ Future<void> generateRandomQuests() async {
     QuestType questType =
         availableQuestTypes[random.nextInt(availableQuestTypes.length)];
 
-    QuestItem quest = generateQuestForType(questType, questIdCounter++);
+    QuestItem quest = await generateQuestForType(questType, questIdCounter++);
     generatedQuests.add(quest);
   }
 
@@ -823,7 +912,7 @@ Future<void> generateRandomQuests() async {
 }
 
 // Helper function to generate a quest for a given quest type
-QuestItem generateQuestForType(QuestType questType, int questId) {
+Future<QuestItem> generateQuestForType(QuestType questType, int questId) async {
   Random random = Random();
   String title;
   String description;
@@ -831,17 +920,20 @@ QuestItem generateQuestForType(QuestType questType, int questId) {
 
   switch (questType) {
     case QuestType.CollectCoins:
-      maxValue = (random.nextInt(20) + 1) * 100; // Between 100 and 2000 coins
+      maxValue =
+          (random.nextInt(100) + 1) * 1000; // Between 1000 and 100,000 coins
       title = 'Collect $maxValue Coins';
       description = 'Collect a total of $maxValue coins.';
       break;
     case QuestType.EarnExperience:
-      maxValue = (random.nextInt(10) + 1) * 50; // Between 50 and 500 experience
+      maxValue = (random.nextInt(200) + 1) *
+          1000; // Between 1000 and 200,000 experience
       title = 'Earn $maxValue Experience';
       description = 'Earn a total of $maxValue experience points.';
       break;
     case QuestType.GenerateFlame:
-      maxValue = (random.nextInt(10) + 1) * 10; // Between 10 and 100 flame
+      maxValue =
+          (random.nextInt(2000) + 1) * 1000; // Between 1000 and 2,000,000 flame
       title = 'Generate $maxValue Flame';
       description = 'Generate a total of $maxValue flame.';
       break;
@@ -850,9 +942,9 @@ QuestItem generateQuestForType(QuestType questType, int questId) {
       title = 'Track $maxValue Hours of Productive Time';
       description = 'Accumulate $maxValue hours of productive work.';
       break;
-    case QuestType.CollectFreeTimeProductiveTime:
+    case QuestType.CollectFreeTimeTime:
       maxValue = random.nextInt(5) + 1; // Between 1 and 5 hours
-      title = 'Track $maxValue Hours of Productive Free Time';
+      title = 'Track $maxValue Hours of Free Time';
       description = 'Be productive for $maxValue hours during free time.';
       break;
     case QuestType.MeetDailyProductiveGoal:
@@ -867,11 +959,34 @@ QuestItem generateQuestForType(QuestType questType, int questId) {
       break;
   }
 
-  bool isGoldReward =
-      random.nextBool(); // Randomly decide if the reward is gold
-  int randomGoldValue =
-      (random.nextInt(15) + 1) * 100; // Between 100 and 1500 gold
-  String rewardValue = isGoldReward ? '$randomGoldValue Gold' : 'Random Item';
+  bool isGoldReward = true;
+  int? randomGoldValue;
+  String? rewardValue;
+  ShopItemData? rewardItem;
+  String? itemImagePath;
+  String? rewardDescription;
+
+  // Determine if the quest reward should be a shop item (2% chance)
+  if (random.nextInt(100) < 2) {
+    // 2% chance
+    // Ensure shopItems is initialized and accessible
+    if (shopItems.isEmpty) {
+      initializeShopItemsFirst(); // Initialize shop items if not already done
+    }
+
+    // Select a random shop item that is not yet bought
+    ShopItemData randomItem = getRandomShopItem();
+    isGoldReward = false;
+    rewardValue = randomItem.title;
+    rewardItem = randomItem;
+    itemImagePath = randomItem.imagePath;
+    rewardDescription = randomItem.description;
+  } else {
+    isGoldReward = true;
+    randomGoldValue =
+        (random.nextInt(1000) + 1) * 50; // Between 1000 and 50.000 gold
+    rewardValue = '$randomGoldValue Gold';
+  }
 
   return QuestItem(
     id: questId.toString(),
@@ -884,12 +999,30 @@ QuestItem generateQuestForType(QuestType questType, int questId) {
     maxValue: maxValue,
     isGoldReward: isGoldReward,
     rewardValue: rewardValue,
-    goldValue: isGoldReward ? randomGoldValue : null,
-    itemImagePath:
-        !isGoldReward ? 'assets/icons/item${random.nextInt(15) + 1}.png' : null,
-    rewardDescription: !isGoldReward ? 'A special item for you.' : null,
+    goldValue: randomGoldValue,
+    itemImagePath: itemImagePath,
+    rewardDescription: rewardDescription,
     questType: questType,
+    rewardItem: rewardItem,
   );
+}
+
+// Helper function to select a random shop item
+ShopItemData getRandomShopItem() {
+  Random random = Random();
+  // Get only items that are not yet bought
+  List<ShopItemData> availableItems =
+      shopItems.where((item) => !item.isBought).toList();
+
+  if (availableItems.isNotEmpty) {
+    int index = random.nextInt(availableItems.length);
+    return availableItems[index];
+  } else {
+    // All items are bought; return a default or handle accordingly
+    // For this example, we'll return a random item from the full list
+    int index = random.nextInt(shopItems.length);
+    return shopItems[index];
+  }
 }
 
 // Function to save quests to SharedPreferences
@@ -934,11 +1067,11 @@ Future<void> updateQuestProgress(int totalFlameGenerated) async {
       ? (todayProductiveHours / productiveDailyGoal).clamp(0.0, 1.0)
       : 0.0;
 
-  double totalFreeTimeProductiveHours = await calculateTotalFreeTimeHours();
-  double todayFreeTimeProductiveHours = await calculateTodayFreetimeHours();
+  double totalFreeTimeHours = await calculateTotalFreeTimeHours();
+  double todayFreeTimeHours = await calculateTodayFreetimeHours();
   ;
-  double todayFreeTimeProductiveProgress = freeTimeProductiveGoal > 0
-      ? (todayFreeTimeProductiveHours / freeTimeProductiveGoal).clamp(0.0, 1.0)
+  double todayFreeTimeProgress = freeTimeProductiveGoal > 0
+      ? (todayFreeTimeHours / freeTimeProductiveGoal).clamp(0.0, 1.0)
       : 0.0;
 
   DateTime currentDate = DateTime.now();
@@ -969,8 +1102,8 @@ Future<void> updateQuestProgress(int totalFlameGenerated) async {
         case QuestType.CollectProductiveTime:
           quest.progress = totalProductiveHours.floor();
           break;
-        case QuestType.CollectFreeTimeProductiveTime:
-          quest.progress = totalFreeTimeProductiveHours.floor();
+        case QuestType.CollectFreeTimeTime:
+          quest.progress = totalFreeTimeHours.floor();
           break;
         case QuestType.MeetDailyProductiveGoal:
           quest.progress = todayGoalMet ? 1 : 0;
@@ -1007,11 +1140,32 @@ Future<void> updateQuestProgress(int totalFlameGenerated) async {
         currentDate.millisecondsSinceEpoch); // Update the last goal hit date
   }
 
-  if (todayFreeTimeProductiveProgress >= 1 && !todayFreeTimeGoalMet) {
+  if (todayFreeTimeProgress >= 1 && !todayFreeTimeGoalMet) {
     await prefs.setBool(
         "isTodayFreeTimeGoalMet", true); // Set today's free time goal as met
     await prefs.setInt("lastFreeTimeGoalHitDate",
         currentDate.millisecondsSinceEpoch); // Update the last goal hit date
+  }
+}
+
+Future<void> saveShopItemsToPreferences() async {
+  final prefs = await SharedPreferences.getInstance();
+  List<String> shopItemsJsonList =
+      shopItems.map((item) => jsonEncode(item.toMap())).toList();
+  await prefs.setStringList('shopItems', shopItemsJsonList);
+}
+
+Future<void> loadShopItemsFromPreferences() async {
+  final prefs = await SharedPreferences.getInstance();
+  List<String>? shopItemsJsonList = prefs.getStringList('shopItems');
+  if (shopItemsJsonList != null) {
+    shopItems = shopItemsJsonList.map((itemJson) {
+      Map<String, dynamic> itemMap = jsonDecode(itemJson);
+      return ShopItemData.fromMap(itemMap);
+    }).toList();
+  } else {
+    // If not found in SharedPreferences, initialize as before
+    initializeShopItemsFirst();
   }
 }
 
