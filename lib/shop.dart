@@ -734,35 +734,23 @@ class FireResearchTier extends StatefulWidget {
 
 class _FireResearchTierState extends State<FireResearchTier> {
   Timer? _timer;
-  double _interval = 0.3; // Initial interval of 0.3 seconds
-  final double _decrement = 0.05; // Speed up by decreasing the interval
-  final double _minInterval = 0.1; // Minimum interval limit
 
   @override
   void dispose() {
-    stopBuying(); // Cancel any active timers when widget is disposed
+    _timer?.cancel(); // Ensure any active timers are cancelled
     super.dispose();
   }
 
   void startBuying(FireResearchItem item, Function onResearch) {
-    _timer = Timer.periodic(Duration(milliseconds: (_interval * 1000).toInt()),
-        (timer) {
-      item.incrementProgress();
-      onResearch();
-
-      // Speed up the interval
-      if (_interval > _minInterval) {
-        _interval -= _decrement;
-        stopBuying(); // Stop the current timer
-        startBuying(item, onResearch); // Restart with the new interval
-      }
+    _timer = Timer.periodic(Duration(milliseconds: 150), (timer) {
+      setState(() {
+        item.incrementProgress();
+      });
     });
   }
 
   void stopBuying() {
     _timer?.cancel();
-    _timer = null;
-    _interval = 0.3; // Reset the interval when stopping
   }
 
   @override
@@ -824,15 +812,17 @@ class _FireResearchTierState extends State<FireResearchTier> {
                     onTap: isTierUnlocked
                         ? () {
                             // Single tap action
-                            item.incrementProgress();
-                            widget.onResearch();
+                            setState(() {
+                              item.incrementProgress();
+                            });
                           }
                         : null,
-                    onTapDown: isTierUnlocked
-                        ? (_) => startBuying(item, widget.onResearch)
+                    onLongPress: isTierUnlocked
+                        ? () {
+                            startBuying(item, widget.onResearch);
+                          }
                         : null,
-                    onTapUp: (_) => stopBuying(),
-                    onTapCancel: () => stopBuying(),
+                    onLongPressUp: () => stopBuying(),
                     child: Container(
                       padding: EdgeInsets.all(10),
                       decoration: BoxDecoration(

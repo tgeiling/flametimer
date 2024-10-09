@@ -56,50 +56,67 @@ int flameLevel = 1;
 final List<int> expGoals = [
   500,
   1000,
-  2000,
-  3000,
-  7000,
-  12000,
+  5000,
+  10000,
   20000,
   30000,
-  45000,
-  65000,
-  90000,
-  130000,
-  180000,
+  50000,
+  70000,
+  100000,
+  150000,
   250000,
-  340000,
-  450000,
-  600000,
-  800000,
-  1050000,
-  1350000,
-  1700000,
-  2100000,
-  2550000,
-  3050000,
-  3600000,
-  4200000,
-  4850000,
-  5550000,
-  6300000,
-  7100000,
-  7960000,
-  8880000,
-  9860000,
-  10900000,
-  12050000,
-  13250000,
-  14500000,
-  15800000,
-  17150000,
-  18550000,
+  500000,
+  1000000,
+  1500000,
+  2000000,
+  3000000,
+  5000000,
+  10000000,
+  15000000,
   20000000,
+  30000000,
+  40000000,
+  50000000,
+  60000000,
+  70000000,
+  80000000,
+  90000000,
+  100000000,
+  150000000,
+  200000000,
+  250000000,
+  300000000,
+  350000000,
+  400000000,
+  450000000,
+  500000000,
+  600000000,
+  700000000,
+  800000000,
+  900000000,
+  1000000000,
 ];
 
 class _MainScaffoldState extends State<MainScaffold> {
   PageController _pageController = PageController();
   int _currentIndex = 0;
+
+  Timer? _questTimer;
+
+  @override
+  void initState() {
+    super.initState();
+
+    initializeQuestItemsFirst();
+    _startQuestTracking();
+  }
+
+  void _startQuestTracking() {
+    _questTimer = Timer.periodic(Duration(seconds: 1), (timer) async {
+      await updateQuestProgress(
+          flameCounter); // Use your progress update function
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -342,16 +359,25 @@ class _MainFrameState extends State<MainFrame>
     }
 
     int originalCoinCount = coinCount;
-    double coinMultiplier = calculateTotalCoinMultiplier(shopItems, tiers);
-    coinCount =
-        (coinCount + increment * coinMultiplier * flameCounterMultiplier)
-            .ceil();
+
+    if (_activeMode != "pause") {
+      double coinMultiplier = calculateTotalCoinMultiplier(shopItems, tiers);
+      coinCount =
+          (coinCount + increment * coinMultiplier * flameCounterMultiplier)
+              .ceil();
+    }
+
     difference = coinCount - originalCoinCount;
 
-    double expMultiplier = calculateTotalExpMultiplier(shopItems, tiers);
-    expCount =
-        (expCount + increment * expMultiplier * flameCounterMultiplier).ceil();
+    if (_activeMode == "pause") {
+      difference = 0;
+    }
 
+    if (_activeMode != "pause") {
+      double expMultiplier = calculateTotalExpMultiplier(shopItems, tiers);
+      expCount = (expCount + increment * expMultiplier * flameCounterMultiplier)
+          .ceil();
+    }
     int expToLevel = calculateLevel(expCount, expGoals);
 
     if (expToLevel > level) {
@@ -487,189 +513,189 @@ class _MainFrameState extends State<MainFrame>
 
     final conditions = [
       {
-        'limit': 30000,
+        'limit': 500000,
         'levelReq': 30,
         'multiplier': 3.1,
         'flameLevel': 30,
         'path': 'assets/campfires/campfire30.gif'
       },
       {
-        'limit': 29000,
+        'limit': 450000,
         'levelReq': 29,
         'multiplier': 3.0,
         'flameLevel': 29,
         'path': 'assets/campfires/campfire29.gif'
       },
       {
-        'limit': 28000,
+        'limit': 400000,
         'levelReq': 28,
         'multiplier': 2.9,
         'flameLevel': 28,
         'path': 'assets/campfires/campfire28.gif'
       },
       {
-        'limit': 27000,
+        'limit': 350000,
         'levelReq': 27,
         'multiplier': 2.8,
         'flameLevel': 27,
         'path': 'assets/campfires/campfire27.gif'
       },
       {
-        'limit': 26000,
+        'limit': 290000,
         'levelReq': 26,
         'multiplier': 2.7,
         'flameLevel': 26,
         'path': 'assets/campfires/campfire26.gif'
       },
       {
-        'limit': 25000,
+        'limit': 260000,
         'levelReq': 25,
         'multiplier': 2.6,
         'flameLevel': 25,
         'path': 'assets/campfires/campfire25.gif'
       },
       {
-        'limit': 24000,
+        'limit': 230000,
         'levelReq': 24,
         'multiplier': 2.5,
         'flameLevel': 24,
         'path': 'assets/campfires/campfire24.gif'
       },
       {
-        'limit': 23000,
+        'limit': 205000,
         'levelReq': 23,
         'multiplier': 2.4,
         'flameLevel': 23,
         'path': 'assets/campfires/campfire23.gif'
       },
       {
-        'limit': 22000,
+        'limit': 180000,
         'levelReq': 22,
         'multiplier': 2.3,
         'flameLevel': 22,
         'path': 'assets/campfires/campfire22.gif'
       },
       {
-        'limit': 21000,
+        'limit': 155000,
         'levelReq': 21,
         'multiplier': 2.2,
         'flameLevel': 21,
         'path': 'assets/campfires/campfire21.gif'
       },
       {
-        'limit': 20000,
+        'limit': 140000,
         'levelReq': 20,
         'multiplier': 3.0,
         'flameLevel': 20,
         'path': 'assets/campfires/campfire20.gif'
       },
       {
-        'limit': 19000,
+        'limit': 125000,
         'levelReq': 19,
         'multiplier': 2.9,
         'flameLevel': 19,
         'path': 'assets/campfires/campfire19.gif'
       },
       {
-        'limit': 18000,
+        'limit': 110000,
         'levelReq': 18,
         'multiplier': 2.8,
         'flameLevel': 18,
         'path': 'assets/campfires/campfire18.gif'
       },
       {
-        'limit': 17000,
+        'limit': 95000,
         'levelReq': 17,
         'multiplier': 2.7,
         'flameLevel': 17,
         'path': 'assets/campfires/campfire17.gif'
       },
       {
-        'limit': 16000,
+        'limit': 85000,
         'levelReq': 16,
         'multiplier': 2.6,
         'flameLevel': 16,
         'path': 'assets/campfires/campfire16.gif'
       },
       {
-        'limit': 15000,
+        'limit': 75000,
         'levelReq': 15,
         'multiplier': 2.5,
         'flameLevel': 15,
         'path': 'assets/campfires/campfire15.gif'
       },
       {
-        'limit': 14000,
+        'limit': 65000,
         'levelReq': 14,
         'multiplier': 2.4,
         'flameLevel': 14,
         'path': 'assets/campfires/campfire14.gif'
       },
       {
-        'limit': 13000,
+        'limit': 55000,
         'levelReq': 13,
         'multiplier': 2.3,
         'flameLevel': 13,
         'path': 'assets/campfires/campfire13.gif'
       },
       {
-        'limit': 12000,
+        'limit': 45000,
         'levelReq': 12,
         'multiplier': 2.2,
         'flameLevel': 12,
         'path': 'assets/campfires/campfire12.gif'
       },
       {
-        'limit': 11000,
+        'limit': 35000,
         'levelReq': 11,
         'multiplier': 2.1,
         'flameLevel': 11,
         'path': 'assets/campfires/campfire11.gif'
       },
       {
-        'limit': 10000,
+        'limit': 30000,
         'levelReq': 10,
         'multiplier': 2.0,
         'flameLevel': 10,
         'path': 'assets/campfires/campfire10.gif'
       },
       {
-        'limit': 9000,
+        'limit': 25000,
         'levelReq': 9,
         'multiplier': 1.9,
         'flameLevel': 9,
         'path': 'assets/campfires/campfire9.gif'
       },
       {
-        'limit': 8000,
+        'limit': 20000,
         'levelReq': 8,
         'multiplier': 1.8,
         'flameLevel': 8,
         'path': 'assets/campfires/campfire8.gif'
       },
       {
-        'limit': 7000,
+        'limit': 15000,
         'levelReq': 7,
         'multiplier': 1.7,
         'flameLevel': 7,
         'path': 'assets/campfires/campfire7.gif'
       },
       {
-        'limit': 6000,
+        'limit': 12000,
         'levelReq': 6,
         'multiplier': 1.6,
         'flameLevel': 6,
         'path': 'assets/campfires/campfire6.gif'
       },
       {
-        'limit': 5000,
+        'limit': 9000,
         'levelReq': 5,
         'multiplier': 1.5,
         'flameLevel': 5,
         'path': 'assets/campfires/campfire5.gif'
       },
       {
-        'limit': 4000,
+        'limit': 6000,
         'levelReq': 4,
         'multiplier': 1.4,
         'flameLevel': 4,
@@ -683,7 +709,7 @@ class _MainFrameState extends State<MainFrame>
         'path': 'assets/campfires/campfire3.gif'
       },
       {
-        'limit': 2000,
+        'limit': 1500,
         'levelReq': 2,
         'multiplier': 1.2,
         'flameLevel': 2,
@@ -791,9 +817,9 @@ class _MainFrameState extends State<MainFrame>
       230, //19
       230, //20
       220, //21
-      220, //22
+      230, //22
       260, //23
-      260, //24
+      190, //24
       260, //25
       260, //26
       260, //27
@@ -1025,6 +1051,7 @@ class _MainFrameState extends State<MainFrame>
       setState(() {
         _activeMode = "pause";
         _printLabel(_activeMode);
+        difference = 0;
       });
       _pauseInterval = Timer.periodic(Duration(seconds: 1), (timer) {
         _pauseTimeTotalSeconds++;

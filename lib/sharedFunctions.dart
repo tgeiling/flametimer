@@ -350,7 +350,7 @@ void initializeShopItemsFirst() async {
     ShopItemData(
       id: 'item1',
       title: "How to make a big Fire",
-      description: "Gives 1.5x more flame genration",
+      description: "Gives 1.5x more Flame gain",
       price: 250,
       imagePath: "assets/icons/item1.png",
       isBought: await prefs.getBool('item1') ?? false,
@@ -361,13 +361,13 @@ void initializeShopItemsFirst() async {
     ShopItemData(
       id: 'item2',
       title: "Art of Hellfire",
-      description: "Gives 15x more flame generation but exp is locked",
+      description: "Gives 15x more Flame gain but exp is almost locked",
       price: 10000,
       imagePath: "assets/icons/item2.png",
       isBought: await prefs.getBool('item2') ?? false,
       isEquiped: await prefs.getBool('item2Equiped') ?? false,
       flameMultiplier: 15.0,
-      expMultiplier: 0.0,
+      expMultiplier: 0.001,
       levelNeeded: 3,
     ),
     ShopItemData(
@@ -396,13 +396,12 @@ void initializeShopItemsFirst() async {
     ShopItemData(
       id: 'item5',
       title: "Cursed Charm",
-      description:
-          "Slows flame generation by 0.2x but increases coin generation by 4x",
+      description: "Slows Flame gain by 0.5x but increases coin gain by 4x",
       price: 20000,
       imagePath: "assets/icons/item5.png",
       isBought: await prefs.getBool('item5') ?? false,
       isEquiped: await prefs.getBool('item5Equiped') ?? false,
-      flameMultiplier: 0.8,
+      flameMultiplier: 0.5,
       coinMultiplier: 4.0,
       levelNeeded: 7,
     ),
@@ -420,9 +419,8 @@ void initializeShopItemsFirst() async {
     ShopItemData(
       id: 'item7',
       title: "Broken Artifact",
-      description:
-          "Literally broken increases flame and coin generation by 10x",
-      price: 150000,
+      description: "Literally broken increases flame and coin gain by 10x",
+      price: 1500000,
       imagePath: "assets/icons/item7.png",
       isBought: prefs.getBool('item7') ?? false,
       isEquiped: await prefs.getBool('item7Equiped') ?? false,
@@ -434,7 +432,7 @@ void initializeShopItemsFirst() async {
       id: 'item8',
       title: "Grinding Needles",
       description: "5x Exp gain",
-      price: 10000,
+      price: 1000000,
       imagePath: "assets/icons/item8.png",
       isBought: prefs.getBool('item8') ?? false,
       isEquiped: await prefs.getBool('item8Equiped') ?? false,
@@ -445,7 +443,7 @@ void initializeShopItemsFirst() async {
       id: 'item9',
       title: "Preparing the Powder",
       description: "4x Exp gain",
-      price: 20000,
+      price: 200000,
       imagePath: "assets/icons/item9.png",
       isBought: prefs.getBool('item9') ?? false,
       isEquiped: await prefs.getBool('item9Equiped') ?? false,
@@ -466,8 +464,8 @@ void initializeShopItemsFirst() async {
     ShopItemData(
       id: 'item11',
       title: "Eternal Flame",
-      description: "6x flame gain",
-      price: 200000,
+      description: "6x Flame gain",
+      price: 2000000,
       imagePath: "assets/icons/item11.png",
       isBought: prefs.getBool('item11') ?? false,
       isEquiped: await prefs.getBool('item11Equiped') ?? false,
@@ -477,8 +475,8 @@ void initializeShopItemsFirst() async {
     ShopItemData(
       id: 'item12',
       title: "Premium Wood",
-      description: "2.5x flame gain",
-      price: 50000,
+      description: "2.5x Flame gain",
+      price: 500000,
       imagePath: "assets/icons/item12.png",
       isBought: prefs.getBool('item12') ?? false,
       isEquiped: await prefs.getBool('item12Equiped') ?? false,
@@ -489,7 +487,7 @@ void initializeShopItemsFirst() async {
       id: 'item13',
       title: "Taxes",
       description: "Make them pay 3.0x Coin gain",
-      price: 800000,
+      price: 8000000,
       imagePath: "assets/icons/item13.png",
       isBought: prefs.getBool('item13') ?? false,
       isEquiped: await prefs.getBool('item13Equiped') ?? false,
@@ -500,7 +498,7 @@ void initializeShopItemsFirst() async {
       id: 'item14',
       title: "Moon of the Dark",
       description: "10x Exp and 10x Coin gain",
-      price: 800000,
+      price: 8000000,
       imagePath: "assets/icons/item14.png",
       isBought: prefs.getBool('item14') ?? false,
       isEquiped: await prefs.getBool('item14Equiped') ?? false,
@@ -511,14 +509,14 @@ void initializeShopItemsFirst() async {
     ShopItemData(
       id: 'item15',
       title: "Latom",
-      description: "2x Exp, 2x Coin, 2x Flame gain",
+      description: "3 Exp, 3x Coin, 3x Flame gain",
       price: 2000000,
       imagePath: "assets/icons/item15.png",
       isBought: prefs.getBool('item15') ?? false,
       isEquiped: await prefs.getBool('item15Equiped') ?? false,
-      coinMultiplier: 10.0,
-      flameMultiplier: 10.0,
-      expMultiplier: 10.0,
+      coinMultiplier: 3.0,
+      flameMultiplier: 3.0,
+      expMultiplier: 3.0,
       levelNeeded: 18,
     ),
     ShopItemData(
@@ -536,8 +534,8 @@ void initializeShopItemsFirst() async {
     ShopItemData(
       id: 'item17',
       title: "Sun's Fury",
-      description: "Flame generation increases by 5x",
-      price: 500000,
+      description: "Flame gain increases by 5x",
+      price: 5000000,
       imagePath: "assets/icons/item17.png", // Image of the sun icon
       isBought: await prefs.getBool('item17') ?? false,
       isEquiped: await prefs.getBool('item17Equiped') ?? false,
@@ -571,7 +569,7 @@ void initializeShopItemsFirst() async {
       id: 'item20',
       title: "Molten Core",
       description: "Increases Flame gain by 80x",
-      price: 750000,
+      price: 75000000,
       imagePath: "assets/icons/item20.png", // Image of molten core
       isBought: await prefs.getBool('item20') ?? false,
       isEquiped: await prefs.getBool('item20Equiped') ?? false,
@@ -582,7 +580,7 @@ void initializeShopItemsFirst() async {
       id: 'item21',
       title: "Flame Lantern",
       description: "Gives 200x EXP gain",
-      price: 1200000,
+      price: 12000000,
       imagePath: "assets/icons/item21.png", // Image of the lantern
       isBought: await prefs.getBool('item21') ?? false,
       isEquiped: await prefs.getBool('item21Equiped') ?? false,
@@ -593,7 +591,7 @@ void initializeShopItemsFirst() async {
       id: 'item22',
       title: "Toxic Blaze",
       description: "Gives 200x Coin gain",
-      price: 1500000,
+      price: 15000000,
       imagePath: "assets/icons/item22.png", // Image of toxic green flame
       isBought: await prefs.getBool('item22') ?? false,
       isEquiped: await prefs.getBool('item22Equiped') ?? false,
@@ -615,7 +613,7 @@ void initializeResearchItemsFirst() async {
         prefKey: 'progressT1_1',
         imageAsset: 'assets/icons/r9.png',
         description: 'Gains 0.01x Exp boost',
-        price: 100,
+        price: 500,
       ),
       FireResearchItem(
         type: 'FLAME',
@@ -624,7 +622,7 @@ void initializeResearchItemsFirst() async {
         prefKey: 'progressT1_2',
         imageAsset: 'assets/icons/r5.png',
         description: 'Gains 0.01x Flame boost',
-        price: 100,
+        price: 500,
       ),
       FireResearchItem(
         type: 'COINS',
@@ -633,7 +631,7 @@ void initializeResearchItemsFirst() async {
         prefKey: 'progressT1_3',
         imageAsset: 'assets/icons/r1.png',
         description: 'Gains 0.01x Coin boost',
-        price: 100,
+        price: 500,
       ),
     ]),
     FireResearchTierData(tier: 2, levelToUnlock: 6, researchItems: [
@@ -644,7 +642,7 @@ void initializeResearchItemsFirst() async {
         prefKey: 'progressT2_1',
         imageAsset: 'assets/icons/r10.png',
         description: 'Gains 0.1x Exp boost',
-        price: 1000,
+        price: 5000,
       ),
       FireResearchItem(
         type: 'FLAME',
@@ -653,7 +651,7 @@ void initializeResearchItemsFirst() async {
         prefKey: 'progressT2_2',
         imageAsset: 'assets/icons/r6.png',
         description: 'Gains 0.1x Flame boost',
-        price: 1000,
+        price: 5000,
       ),
       FireResearchItem(
         type: 'COINS',
@@ -662,7 +660,7 @@ void initializeResearchItemsFirst() async {
         prefKey: 'progressT2_3',
         imageAsset: 'assets/icons/r2.png',
         description: 'Gains 0.1x Coin boost',
-        price: 1000,
+        price: 5000,
       ),
     ]),
     FireResearchTierData(tier: 3, levelToUnlock: 15, researchItems: [
@@ -673,7 +671,7 @@ void initializeResearchItemsFirst() async {
         prefKey: 'progressT3_1',
         imageAsset: 'assets/icons/r11.png',
         description: 'Gains 1.0x Exp boost',
-        price: 5000,
+        price: 50000,
       ),
       FireResearchItem(
         type: 'FLAME',
@@ -682,7 +680,7 @@ void initializeResearchItemsFirst() async {
         prefKey: 'progressT3_2',
         imageAsset: 'assets/icons/r7.png',
         description: 'Gains 1.0x Flame boost',
-        price: 5000,
+        price: 50000,
       ),
       FireResearchItem(
         type: 'COINS',
@@ -691,7 +689,7 @@ void initializeResearchItemsFirst() async {
         prefKey: 'progressT3_3',
         imageAsset: 'assets/icons/r3.png',
         description: 'Gains 1x Coin boost',
-        price: 5000,
+        price: 50000,
       )
     ]),
     FireResearchTierData(tier: 4, levelToUnlock: 20, researchItems: [
@@ -702,7 +700,7 @@ void initializeResearchItemsFirst() async {
         prefKey: 'progressT4_1',
         imageAsset: 'assets/icons/r12.png',
         description: 'Gains 10x Exp boost',
-        price: 10000,
+        price: 150000,
       ),
       FireResearchItem(
         type: 'FLAME',
@@ -711,7 +709,7 @@ void initializeResearchItemsFirst() async {
         prefKey: 'progressT4_2',
         imageAsset: 'assets/icons/r8.png',
         description: 'Gains 10x Flame boost',
-        price: 10000,
+        price: 150000,
       ),
       FireResearchItem(
         type: 'COINS',
@@ -720,7 +718,7 @@ void initializeResearchItemsFirst() async {
         prefKey: 'progressT4_3',
         imageAsset: 'assets/icons/r4.png',
         description: 'Gains 10 Coin boost',
-        price: 10000,
+        price: 150000,
       ),
     ]),
   ];
@@ -1054,97 +1052,133 @@ Future<void> loadQuestsFromPreferences() async {
   }
 }
 
-// Function to update quest progress
 Future<void> updateQuestProgress(int totalFlameGenerated) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
+  // Retrieve last counts from SharedPreferences
+  int lastExpCount = prefs.getInt('lastExpCount') ?? 0;
+  int lastCoinCount = prefs.getInt('lastCoinCount') ?? 0;
+  int lastFlameCount = prefs.getInt('lastFlameCount') ?? 0;
+
+  // Get other necessary values from SharedPreferences
   double productiveDailyGoal = prefs.getDouble('productiveDailyGoal') ?? 0.0;
   double freeTimeProductiveGoal = prefs.getDouble('freetimeDailyGoal') ?? 0.0;
 
+  // Calculate productive hours and progress
   double totalProductiveHours = await calculateTotalProductiveTimeHours();
   double todayProductiveHours = await calculateTodayProductiveHours();
   double todayProductiveProgress = productiveDailyGoal > 0
       ? (todayProductiveHours / productiveDailyGoal).clamp(0.0, 1.0)
       : 0.0;
 
+  // Calculate free time hours and progress
   double totalFreeTimeHours = await calculateTotalFreeTimeHours();
   double todayFreeTimeHours = await calculateTodayFreetimeHours();
-  ;
   double todayFreeTimeProgress = freeTimeProductiveGoal > 0
       ? (todayFreeTimeHours / freeTimeProductiveGoal).clamp(0.0, 1.0)
       : 0.0;
 
   DateTime currentDate = DateTime.now();
-  int lastGoalHitTimestamp = prefs.getInt("lastGoalHitDate") ?? 0;
-  DateTime lastGoalHitDate =
-      DateTime.fromMillisecondsSinceEpoch(lastGoalHitTimestamp);
+  String savedDate = prefs.getString("lastDateCheck") ?? "";
 
-  bool todayGoalMet = prefs.getBool("isTodayGoalMet") ?? false;
-  bool todayFreeTimeGoalMet = prefs.getBool("isTodayFreeTimeGoalMet") ?? false;
+  // Check if it's a new day
+  bool isNewDay = savedDate != currentDate.toIso8601String().substring(0, 10);
 
-  // Reset isTodayGoalMet if it's a new day
-  if (lastGoalHitDate.day != currentDate.day ||
-      lastGoalHitDate.month != currentDate.month ||
-      lastGoalHitDate.year != currentDate.year) {
+  if (isNewDay) {
+    // Reset daily goals and progress for the new day
     await prefs.setBool("isTodayGoalMet", false);
     await prefs.setBool("isTodayFreeTimeGoalMet", false);
-    todayGoalMet = false;
-    todayFreeTimeGoalMet = false;
+
+    // Save the new day's date
+    await prefs.setString(
+        "lastDateCheck", currentDate.toIso8601String().substring(0, 10));
+
+    // Optionally reset daily quest progress if needed
+    // For daily quests, you might want to reset their progress here
   }
 
   int level = prefs.getInt('playerLevel') ?? 1;
-  int totalCoinsCollected = prefs.getInt('coinCount') ?? 0;
   int totalExperienceEarned = prefs.getInt('expCount') ?? 0;
 
-  for (QuestItem quest in questItems) {
-    if (!quest.isDone && quest.level <= level) {
-      switch (quest.questType) {
-        case QuestType.CollectProductiveTime:
-          quest.progress = totalProductiveHours.floor();
-          break;
-        case QuestType.CollectFreeTimeTime:
-          quest.progress = totalFreeTimeHours.floor();
-          break;
-        case QuestType.MeetDailyProductiveGoal:
-          quest.progress = todayGoalMet ? 1 : 0;
-          break;
-        case QuestType.MeetFreeTimeProductiveGoal:
-          quest.progress = todayFreeTimeGoalMet ? 1 : 0;
-          break;
-        case QuestType.CollectCoins:
-          quest.progress = totalCoinsCollected;
-          break;
-        case QuestType.EarnExperience:
-          quest.progress = totalExperienceEarned;
-          break;
-        case QuestType.GenerateFlame:
-          quest.progress = totalFlameGenerated;
-          break;
-      }
+  // Retrieve totalCoinsEarned from SharedPreferences
+  int totalCoinsEarned = prefs.getInt('coinCount') ?? 0;
 
-      quest.progress = quest.progress.clamp(0, quest.maxValue);
+  // Calculate incremental increases
+  int incrementalExpEarned = totalExperienceEarned - lastExpCount;
+  int incrementalCoinsEarned = totalCoinsEarned - lastCoinCount;
+  int incrementalFlamesGenerated = totalFlameGenerated - lastFlameCount;
 
-      if (quest.progress >= quest.maxValue) {
-        quest.progress = quest.maxValue;
-        quest.isDone = true;
+  // Ensure that incremental values are non-negative
+  incrementalExpEarned = incrementalExpEarned < 0 ? 0 : incrementalExpEarned;
+  incrementalCoinsEarned =
+      incrementalCoinsEarned < 0 ? 0 : incrementalCoinsEarned;
+  incrementalFlamesGenerated =
+      incrementalFlamesGenerated < 0 ? 0 : incrementalFlamesGenerated;
+
+  // Update last counts
+  lastExpCount = totalExperienceEarned;
+  lastCoinCount = totalCoinsEarned;
+  lastFlameCount = totalFlameGenerated;
+
+  // Save updated last counts to SharedPreferences
+  await prefs.setInt('lastExpCount', lastExpCount);
+  await prefs.setInt('lastCoinCount', lastCoinCount);
+  await prefs.setInt('lastFlameCount', lastFlameCount);
+
+  // Only update the progress if there is an increase
+  if (incrementalFlamesGenerated > 0 ||
+      incrementalExpEarned > 0 ||
+      incrementalCoinsEarned > 0) {
+    // Update quests progress based on the new incremental progress values
+    for (QuestItem quest in questItems) {
+      if (!quest.isDone && quest.level <= level) {
+        switch (quest.questType) {
+          case QuestType.CollectProductiveTime:
+            quest.progress = totalProductiveHours.floor();
+            break;
+          case QuestType.CollectFreeTimeTime:
+            quest.progress = totalFreeTimeHours.floor();
+            break;
+          case QuestType.MeetDailyProductiveGoal:
+            quest.progress = prefs.getBool("isTodayGoalMet") == true ? 1 : 0;
+            break;
+          case QuestType.MeetFreeTimeProductiveGoal:
+            quest.progress =
+                prefs.getBool("isTodayFreeTimeGoalMet") == true ? 1 : 0;
+            break;
+          case QuestType.CollectCoins:
+            quest.progress += incrementalCoinsEarned;
+            break;
+          case QuestType.EarnExperience:
+            quest.progress += incrementalExpEarned;
+            break;
+          case QuestType.GenerateFlame:
+            quest.progress += incrementalFlamesGenerated;
+            break;
+        }
+
+        quest.progress = quest.progress.clamp(0, quest.maxValue);
+
+        if (quest.progress >= quest.maxValue) {
+          quest.progress = quest.maxValue;
+          quest.isDone = true;
+        }
       }
     }
+
+    // Save updated quests to SharedPreferences
+    await saveQuestsToPreferences();
   }
 
-  // Save updated quests to SharedPreferences
-  await saveQuestsToPreferences();
-
-  if (todayProductiveProgress >= 1 && !todayGoalMet) {
-    await prefs.setBool("isTodayGoalMet", true); // Set today's goal as met
-    await prefs.setInt("lastGoalHitDate",
-        currentDate.millisecondsSinceEpoch); // Update the last goal hit date
+  // Update daily goal met status
+  if (todayProductiveProgress >= 1 &&
+      !(prefs.getBool("isTodayGoalMet") ?? false)) {
+    await prefs.setBool("isTodayGoalMet", true);
   }
 
-  if (todayFreeTimeProgress >= 1 && !todayFreeTimeGoalMet) {
-    await prefs.setBool(
-        "isTodayFreeTimeGoalMet", true); // Set today's free time goal as met
-    await prefs.setInt("lastFreeTimeGoalHitDate",
-        currentDate.millisecondsSinceEpoch); // Update the last goal hit date
+  if (todayFreeTimeProgress >= 1 &&
+      !(prefs.getBool("isTodayFreeTimeGoalMet") ?? false)) {
+    await prefs.setBool("isTodayFreeTimeGoalMet", true);
   }
 }
 
@@ -1235,19 +1269,19 @@ double calculateTotalExpMultiplier(
     List<ShopItemData> shopItems, List<FireResearchTierData> researchTiers) {
   double totalExpMultiplier = 1.0; // Starting with a default multiplier of 1
 
-  for (var item in shopItems) {
-    if (item.isEquiped &&
-        item.expMultiplier != null &&
-        item.expMultiplier != 0.0) {
-      totalExpMultiplier *= item.expMultiplier!;
-    }
-  }
-
   for (var tier in researchTiers) {
     for (var researchItem in tier.researchItems) {
       if (researchItem.type == 'EXP') {
         totalExpMultiplier += (researchItem.multiplier * researchItem.progress);
       }
+    }
+  }
+
+  for (var item in shopItems) {
+    if (item.isEquiped &&
+        item.expMultiplier != null &&
+        item.expMultiplier != 0.0) {
+      totalExpMultiplier *= item.expMultiplier!;
     }
   }
 
