@@ -362,9 +362,9 @@ class _MainFrameState extends State<MainFrame>
 
     if (_activeMode != "pause") {
       double coinMultiplier = calculateTotalCoinMultiplier(shopItems, tiers);
-      coinCount =
-          (coinCount + increment * coinMultiplier * flameCounterMultiplier)
-              .ceil();
+      coinCount = (coinCount +
+              increment * coinMultiplier * flameCounterMultiplier * 1000000)
+          .ceil();
     }
 
     difference = coinCount - originalCoinCount;
@@ -375,7 +375,8 @@ class _MainFrameState extends State<MainFrame>
 
     if (_activeMode != "pause") {
       double expMultiplier = calculateTotalExpMultiplier(shopItems, tiers);
-      expCount = (expCount + increment * expMultiplier * flameCounterMultiplier)
+      expCount = (expCount +
+              increment * expMultiplier * flameCounterMultiplier * 10000)
           .ceil();
     }
     int expToLevel = calculateLevel(expCount, expGoals);
